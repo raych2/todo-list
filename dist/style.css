@@ -1,0 +1,37 @@
+*, *:before, *:after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    background-color: #3E5C76;
+    color: #ffffff;
+}
+header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px #0D1321 solid;
+    background-color: #0D1321;
+}
+header i {
+    margin: 20px 40px 20px 20px;
+}
+.app-title {
+    margin: 20px 20px 20px 50px;
+    font: 700 2em 'Roboto Condensed', sans-serif;
+}
+.project-navbar {
+    position: fixed;
+    min-width: 300px;
+    width: 310px;
+    height: 100%;
+    margin: 0 auto 0 50px;
+    padding-top: 20px;
+    font: 400 1.5em 'Roboto Condensed', sans-serif;
+    border-right: 3px #0D1321 solid;
+}
+.project-content {
+    position: absolute;
+}
