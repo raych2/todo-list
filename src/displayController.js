@@ -13,12 +13,31 @@ const renderTodoForm = () => {
 
     addBtn.addEventListener('click', openForm);
     cancelBtn.addEventListener('click', closeForm);
+}
 
-    window.onclick = function(e) {
-        if (e.target === newTodoForm) {
-            newTodoForm.style.display = "none";
-        }
+const renderProjectForm = () => {
+    const newProjectForm = document.getElementById('newProjectForm');
+    const addBtn = document.querySelector('.project-add-btn');
+    const cancelBtn = document.querySelector('.project-cancel-btn');
+    
+    function openForm(e) {
+        newProjectForm.style.display = 'block';
+    }
+
+    function closeForm(e) {
+        newProjectForm.style.display = 'none';
+    }
+
+    addBtn.addEventListener('click', openForm);
+    cancelBtn.addEventListener('click', closeForm);
+}
+
+window.onclick = function(e) {
+    if (e.target === newTodoForm) {
+        newTodoForm.style.display = "none";
+    } else if (e.target === newProjectForm) {
+        newProjectForm.style.display = "none";
     }
 }
 
-export default renderTodoForm;
+export {renderTodoForm, renderProjectForm};

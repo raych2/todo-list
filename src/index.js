@@ -1,3 +1,4 @@
-import renderTodoForm from './displayController.js';
+import {renderTodoForm, renderProjectForm} from './displayController.js';
 
 renderTodoForm();
+renderProjectForm();
