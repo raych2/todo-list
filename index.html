@@ -12,13 +12,48 @@
 <body>
     <header>
         <div class="app-title">Todo List</div>
-        <i class="fas fa-plus"></i>
+        <button type="button" class="add-btn">
+            <i class="fas fa-plus"></i>
+        </button>
     </header>
     <div class="app-content">
         <nav class="project-navbar">
             <div class="navbar-title"> Projects</div>
         </nav>
         <div class="project-content"></div>
+    </div>
+    <div class="modal" id="newTodoForm">
+        <form class="modal-form">
+            <div class="form-header">
+                <button type="button" class="cancel-btn">
+                    <i class="fas fa-window-close"></i>
+                </button>
+                <div>New Todo</div>
+            </div>
+            <div class="form-body">
+                <div>
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="todo-title" placeholder="Title" required/>
+                </div>
+                <div>
+                    <label for="description">Description:</label>
+                    <input type="text" id="description" name="todo-description" placeholder="Description" required/>
+                </div>
+                <div>
+                    <label for="dueDate">Due Date:</label>
+                    <input type="date" id="dueDate" name="task-due" value="2021-01-01" min="2021-01-01">
+                </div>
+                <div>
+                    <label for="priority">Priority:</label>
+                    <select name="todo-priority" id="priority">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <button type="submit" id="submit">Add</button>
+            </div>
+        </form>
     </div>
     <script src="main.js"></script>
 </body>
