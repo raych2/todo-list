@@ -19,7 +19,7 @@
     <div class="app-content">
         <nav class="project-navbar">
             <div class="navbar-title"> Projects</div>
-            <button type="button" class="add-btn">
+            <button type="button" class="project-add-btn">
                 <i class="fas fa-plus"></i>
             </button>
         </nav>
@@ -53,6 +53,22 @@
                         <option value="medium">Medium</option>
                         <option value="high">High</option>
                     </select>
+                </div>
+                <button type="submit" id="submit">Add</button>
+            </div>
+        </form>
+    </div>
+    <div class="modal" id="newProjectForm">
+        <form class="modal-form">
+            <div class="form-header">
+                <button type="button" class="project-cancel-btn">
+                    <i class="fas fa-window-close"></i>
+                </button>
+                <div>New Project</div>
+            </div>
+            <div class="form-body">
+                <div>
+                    <input type="text" id="title" name="project-name" placeholder="Name" required/>
                 </div>
                 <button type="submit" id="submit">Add</button>
             </div>

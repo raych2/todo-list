@@ -10,7 +10,8 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */   "renderTodoForm": () => /* binding */ renderTodoForm,
+/* harmony export */   "renderProjectForm": () => /* binding */ renderProjectForm
 /* harmony export */ });
 const renderTodoForm = () => {
     const newTodoForm = document.getElementById('newTodoForm');
@@ -27,15 +28,34 @@ const renderTodoForm = () => {
 
     addBtn.addEventListener('click', openForm);
     cancelBtn.addEventListener('click', closeForm);
+}
 
-    window.onclick = function(e) {
-        if (e.target === newTodoForm) {
-            newTodoForm.style.display = "none";
-        }
+const renderProjectForm = () => {
+    const newProjectForm = document.getElementById('newProjectForm');
+    const addBtn = document.querySelector('.project-add-btn');
+    const cancelBtn = document.querySelector('.project-cancel-btn');
+    
+    function openForm(e) {
+        newProjectForm.style.display = 'block';
+    }
+
+    function closeForm(e) {
+        newProjectForm.style.display = 'none';
+    }
+
+    addBtn.addEventListener('click', openForm);
+    cancelBtn.addEventListener('click', closeForm);
+}
+
+window.onclick = function(e) {
+    if (e.target === newTodoForm) {
+        newTodoForm.style.display = "none";
+    } else if (e.target === newProjectForm) {
+        newProjectForm.style.display = "none";
     }
 }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (renderTodoForm);
+
 
 /***/ }),
 
@@ -49,7 +69,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _displayController_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./displayController.js */ "./src/displayController.js");
 
 
-(0,_displayController_js__WEBPACK_IMPORTED_MODULE_0__.default)();
+(0,_displayController_js__WEBPACK_IMPORTED_MODULE_0__.renderTodoForm)();
+(0,_displayController_js__WEBPACK_IMPORTED_MODULE_0__.renderProjectForm)();
 
 /***/ })
 

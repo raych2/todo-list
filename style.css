@@ -22,7 +22,7 @@ header i {
     margin: 20px 20px 20px 50px;
     font: 700 2em 'Roboto Condensed', sans-serif;
 }
-.add-btn, .cancel-btn {
+.add-btn, .cancel-btn, .project-add-btn, .project-cancel-btn {
     background: transparent no-repeat;
     border: none;
     outline: none;
