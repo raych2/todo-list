@@ -1,11 +1,3 @@
-/*
- * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
- * This devtool is not neither made for production nor for readable output files.
- * It uses "eval()" calls to create a separate source file in the browser devtools.
- * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
- * or disable the default devtool with "devtool: false".
- * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
- */
 /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
@@ -16,7 +8,34 @@
   \**********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => __WEBPACK_DEFAULT_EXPORT__\n/* harmony export */ });\nconst renderTodoForm = () => {\n    const newTodoForm = document.getElementById('newTodoForm');\n    const addBtn = document.querySelector('.add-btn');\n    const cancelBtn = document.querySelector('.cancel-btn');\n    \n    function openForm(e) {\n        newTodoForm.style.display = 'block';\n    }\n\n    function closeForm(e) {\n        newTodoForm.style.display = 'none';\n    }\n\n    addBtn.addEventListener('click', openForm);\n    cancelBtn.addEventListener('click', closeForm);\n\n    window.onclick = function(e) {\n        if (e.target === newTodoForm) {\n            newTodoForm.style.display = \"none\";\n        }\n    }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (renderTodoForm);\n\n//# sourceURL=webpack://todo-list/./src/displayController.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => __WEBPACK_DEFAULT_EXPORT__
+/* harmony export */ });
+const renderTodoForm = () => {
+    const newTodoForm = document.getElementById('newTodoForm');
+    const addBtn = document.querySelector('.add-btn');
+    const cancelBtn = document.querySelector('.cancel-btn');
+    
+    function openForm(e) {
+        newTodoForm.style.display = 'block';
+    }
+
+    function closeForm(e) {
+        newTodoForm.style.display = 'none';
+    }
+
+    addBtn.addEventListener('click', openForm);
+    cancelBtn.addEventListener('click', closeForm);
+
+    window.onclick = function(e) {
+        if (e.target === newTodoForm) {
+            newTodoForm.style.display = "none";
+        }
+    }
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (renderTodoForm);
 
 /***/ }),
 
@@ -26,7 +45,11 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \**********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _displayController_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./displayController.js */ \"./src/displayController.js\");\n\n\n(0,_displayController_js__WEBPACK_IMPORTED_MODULE_0__.default)();\n\n//# sourceURL=webpack://todo-list/./src/index.js?");
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _displayController_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./displayController.js */ "./src/displayController.js");
+
+
+(0,_displayController_js__WEBPACK_IMPORTED_MODULE_0__.default)();
 
 /***/ })
 
@@ -91,3 +114,4 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _dis
 /******/ 	// This entry module used 'exports' so it can't be inlined
 /******/ })()
 ;
+//# sourceMappingURL=main.js.map

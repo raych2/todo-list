@@ -29,12 +29,17 @@ header i {
     color: #ffffff;
 }
 .project-navbar {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-content: flex-start;
+    align-items: center;
     position: fixed;
     min-width: 300px;
     width: 310px;
     height: 100%;
     margin: 0 auto 0 50px;
-    padding-top: 20px;
+    padding: 20px 50px 0 0;
     font: 400 1.5em 'Roboto Condensed', sans-serif;
     border-right: 3px #0D1321 solid;
 }
