@@ -1,3 +1,7 @@
+import {myProjects, newProjectForm, Project} from './projectItem.js';
+
+const projects = document.querySelector('.project-content');
+
 const renderTodoForm = () => {
     const newTodoForm = document.getElementById('newTodoForm');
     const addBtn = document.querySelector('.add-btn');
@@ -39,5 +43,34 @@ window.onclick = function(e) {
         newProjectForm.style.display = "none";
     }
 }
+
+const addNewProject = (project) => {
+    myProjects.push(project);
+}
+
+function clearCurrentProjects() {
+    projects.innerHTML = '';
+}
+
+const displayProjects = () => {
+    myProjects.forEach(project => {
+        const projectDiv = document.createElement('div');
+        let pName = document.createElement('div');
+        pName.classList.add('project-name');
+        pName.textContent = project.name;
+        projectDiv.append(pName);
+        projects.append(projectDiv);
+    });
+}
+
+newProjectForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const projectName = document.getElementById('name').value;
+    const newProject = new Project(projectName);
+    addNewProject(newProject);
+    clearCurrentProjects();
+    displayProjects();
+    newProjectForm.reset();
+});
 
 export {renderTodoForm, renderProjectForm};

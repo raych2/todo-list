@@ -45,6 +45,13 @@ header i {
 }
 .project-content {
     position: absolute;
+    margin: 50px auto 0 50px;
+}
+.project-name {
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 10px 0;
+    font: 400 1em 'Roboto Condensed', sans-serif;
 }
 .modal {
     display: none;
@@ -58,7 +65,7 @@ header i {
     overflow: auto;
     background-color: rgba(0,0,0,0.4);
 }
-.modal-form {
+.modal-form, .project-modal-form {
     position: relative;
     background-color: #000000;
     margin: auto;

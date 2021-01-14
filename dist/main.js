@@ -13,6 +13,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "renderTodoForm": () => /* binding */ renderTodoForm,
 /* harmony export */   "renderProjectForm": () => /* binding */ renderProjectForm
 /* harmony export */ });
+/* harmony import */ var _projectItem_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./projectItem.js */ "./src/projectItem.js");
+
+
+const projects = document.querySelector('.project-content');
+
 const renderTodoForm = () => {
     const newTodoForm = document.getElementById('newTodoForm');
     const addBtn = document.querySelector('.add-btn');
@@ -50,10 +55,39 @@ const renderProjectForm = () => {
 window.onclick = function(e) {
     if (e.target === newTodoForm) {
         newTodoForm.style.display = "none";
-    } else if (e.target === newProjectForm) {
-        newProjectForm.style.display = "none";
+    } else if (e.target === _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.newProjectForm) {
+        _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.newProjectForm.style.display = "none";
     }
 }
+
+const addNewProject = (project) => {
+    _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.push(project);
+}
+
+function clearCurrentProjects() {
+    projects.innerHTML = '';
+}
+
+const displayProjects = () => {
+    _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.forEach(project => {
+        const projectDiv = document.createElement('div');
+        let pName = document.createElement('div');
+        pName.classList.add('project-name');
+        pName.textContent = project.name;
+        projectDiv.append(pName);
+        projects.append(projectDiv);
+    });
+}
+
+_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.newProjectForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const projectName = document.getElementById('name').value;
+    const newProject = new _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.Project(projectName);
+    addNewProject(newProject);
+    clearCurrentProjects();
+    displayProjects();
+    _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.newProjectForm.reset();
+});
 
 
 
@@ -68,9 +102,36 @@ window.onclick = function(e) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _displayController_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./displayController.js */ "./src/displayController.js");
 
+//import { myProjects, addNewProject } from './projectItem.js';
 
 (0,_displayController_js__WEBPACK_IMPORTED_MODULE_0__.renderTodoForm)();
 (0,_displayController_js__WEBPACK_IMPORTED_MODULE_0__.renderProjectForm)();
+
+
+/***/ }),
+
+/***/ "./src/projectItem.js":
+/*!****************************!*\
+  !*** ./src/projectItem.js ***!
+  \****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "myProjects": () => /* binding */ myProjects,
+/* harmony export */   "newProjectForm": () => /* binding */ newProjectForm,
+/* harmony export */   "Project": () => /* binding */ Project
+/* harmony export */ });
+const myProjects = [];
+const newProjectForm = document.querySelector('.project-modal-form');
+
+class Project {
+    constructor(name) {
+        this.name = name;
+    }
+}
+
+
 
 /***/ })
 
