@@ -1,6 +1,6 @@
 import {myProjects, newProjectForm, Project} from './projectItem.js';
 
-const projects = document.querySelector('.project-content');
+const projectList = document.querySelector('.project-list');
 
 const renderTodoForm = () => {
     const newTodoForm = document.getElementById('newTodoForm');
@@ -49,17 +49,31 @@ const addNewProject = (project) => {
 }
 
 function clearCurrentProjects() {
-    projects.innerHTML = '';
+    projectList.innerHTML = '';
+}
+
+function removeProject(e) {
+    let index = e.target.parentNode.dataset.order;
+    myProjects.splice(index, 1);
+    clearCurrentProjects();
+    displayProjects();
 }
 
 const displayProjects = () => {
-    myProjects.forEach(project => {
+    myProjects.forEach((project, index) => {
         const projectDiv = document.createElement('div');
+        const removeBtn = document.createElement('button');
+        projectDiv.classList.add('project-div');
+        removeBtn.classList.add('project-remove-btn')
+        removeBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
         let pName = document.createElement('div');
+        pName.dataset.order = index;
         pName.classList.add('project-name');
         pName.textContent = project.name;
         projectDiv.append(pName);
-        projects.append(projectDiv);
+        projectDiv.append(removeBtn);
+        projectList.append(projectDiv);
+        removeBtn.addEventListener('click', removeProject);
     });
 }
 

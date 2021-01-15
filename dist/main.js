@@ -16,7 +16,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _projectItem_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./projectItem.js */ "./src/projectItem.js");
 
 
-const projects = document.querySelector('.project-content');
+const projectList = document.querySelector('.project-list');
 
 const renderTodoForm = () => {
     const newTodoForm = document.getElementById('newTodoForm');
@@ -62,20 +62,36 @@ window.onclick = function(e) {
 
 const addNewProject = (project) => {
     _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.push(project);
+    console.log(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects);
 }
 
 function clearCurrentProjects() {
-    projects.innerHTML = '';
+    projectList.innerHTML = '';
+}
+
+function removeProject(e) {
+    let index = e.target.parentNode.dataset.order;
+    _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.splice(index, 1);
+    clearCurrentProjects();
+    displayProjects();
 }
 
 const displayProjects = () => {
-    _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.forEach(project => {
+    _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.forEach((project, index) => {
         const projectDiv = document.createElement('div');
+        const removeBtn = document.createElement('button');
+        projectDiv.classList.add('project-div');
+        removeBtn.classList.add('project-remove-btn')
+        removeBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
         let pName = document.createElement('div');
+        pName.dataset.order = index;
+        console.log(pName.dataset.order);
         pName.classList.add('project-name');
         pName.textContent = project.name;
         projectDiv.append(pName);
-        projects.append(projectDiv);
+        projectDiv.append(removeBtn);
+        projectList.append(projectDiv);
+        removeBtn.addEventListener('click', removeProject);
     });
 }
 
@@ -102,7 +118,6 @@ _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.newProjectForm.addEventListener('su
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _displayController_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./displayController.js */ "./src/displayController.js");
 
-//import { myProjects, addNewProject } from './projectItem.js';
 
 (0,_displayController_js__WEBPACK_IMPORTED_MODULE_0__.renderTodoForm)();
 (0,_displayController_js__WEBPACK_IMPORTED_MODULE_0__.renderProjectForm)();
@@ -127,6 +142,7 @@ const newProjectForm = document.querySelector('.project-modal-form');
 
 class Project {
     constructor(name) {
+        //this.id = id;
         this.name = name;
     }
 }

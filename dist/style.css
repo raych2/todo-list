@@ -20,9 +20,9 @@ header i {
 }
 .app-title {
     margin: 20px 20px 20px 50px;
-    font: 700 2em 'Roboto Condensed', sans-serif;
+    font: 700 2.5em 'Roboto Condensed', sans-serif;
 }
-.add-btn, .cancel-btn, .project-add-btn, .project-cancel-btn {
+.add-btn, .cancel-btn, .project-add-btn, .project-cancel-btn, .project-remove-btn {
     background: transparent no-repeat;
     border: none;
     outline: none;
@@ -30,28 +30,41 @@ header i {
 }
 .project-navbar {
     display: flex;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    align-content: flex-start;
-    align-items: center;
+    flex-flow: column nowrap;
     position: fixed;
     min-width: 300px;
     width: 310px;
     height: 100%;
-    margin: 0 auto 0 50px;
-    padding: 20px 50px 0 0;
-    font: 400 1.5em 'Roboto Condensed', sans-serif;
+    margin: 0 auto;
+    padding: 20px 20px 0 50px;
     border-right: 3px #0D1321 solid;
+}
+.navbar-title {
+    margin: 10px auto;
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    font: 400 2em 'Roboto Condensed', sans-serif;
+}
+.project-list {
+    display: flex;
+    flex-flow: column nowrap;
+    align-content: space-between;
+    align-items: center;
+    position: relative;
+}
+.project-div {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font: 400 1.5em 'Roboto Condensed', sans-serif;
 }
 .project-content {
     position: absolute;
-    margin: 50px auto 0 50px;
-}
-.project-name {
-    display: flex;
-    flex-flow: column nowrap;
-    padding: 10px 0;
-    font: 400 1em 'Roboto Condensed', sans-serif;
+    margin: 50px auto 100px 400px;
 }
 .modal {
     display: none;
