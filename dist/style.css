@@ -63,8 +63,22 @@ header i {
     font: 400 1.5em 'Roboto Condensed', sans-serif;
 }
 .project-content {
-    position: absolute;
+    display: flex;
+    flex-flow: column nowrap;
+    position: fixed;
     margin: 50px auto 100px 400px;
+    min-width: 800px;
+    width: 810px;
+    height: 100%;
+    font: 400 1.5em 'Roboto Condensed', sans-serif;
+}
+.pc-div {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font: 400 1.5em 'Roboto Condensed', sans-serif;
 }
 .modal {
     display: none;

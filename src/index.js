@@ -1,4 +1,5 @@
-import {renderTodoForm, renderProjectForm} from './displayController.js';
+import { renderProjectForm } from './displayController.js';
 
-renderTodoForm();
-renderProjectForm();
+const initialize = (() => {
+    renderProjectForm();
+})();

@@ -10,13 +10,10 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "renderTodoForm": () => /* binding */ renderTodoForm,
 /* harmony export */   "renderProjectForm": () => /* binding */ renderProjectForm
 /* harmony export */ });
 /* harmony import */ var _projectItem_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./projectItem.js */ "./src/projectItem.js");
 
-
-const projectList = document.querySelector('.project-list');
 
 const renderTodoForm = () => {
     const newTodoForm = document.getElementById('newTodoForm');
@@ -55,55 +52,76 @@ const renderProjectForm = () => {
 window.onclick = function(e) {
     if (e.target === newTodoForm) {
         newTodoForm.style.display = "none";
-    } else if (e.target === _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.newProjectForm) {
-        _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.newProjectForm.style.display = "none";
+    } else if (e.target === newProjectForm) {
+        newProjectForm.style.display = "none";
     }
 }
 
-const addNewProject = (project) => {
-    _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.push(project);
-    console.log(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects);
-}
-
-function clearCurrentProjects() {
-    projectList.innerHTML = '';
-}
-
-function removeProject(e) {
-    let index = e.target.parentNode.dataset.order;
-    _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.splice(index, 1);
-    clearCurrentProjects();
-    displayProjects();
-}
-
-const displayProjects = () => {
-    _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.forEach((project, index) => {
-        const projectDiv = document.createElement('div');
-        const removeBtn = document.createElement('button');
-        projectDiv.classList.add('project-div');
-        removeBtn.classList.add('project-remove-btn')
-        removeBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
-        let pName = document.createElement('div');
-        pName.dataset.order = index;
-        console.log(pName.dataset.order);
-        pName.classList.add('project-name');
-        pName.textContent = project.name;
-        projectDiv.append(pName);
-        projectDiv.append(removeBtn);
-        projectList.append(projectDiv);
-        removeBtn.addEventListener('click', removeProject);
+const displayProjectList = (() => {
+    const projectList = document.querySelector('.project-list');
+    const newProjectForm = document.querySelector('.project-modal-form');
+    
+    function clearCurrentProjects() {
+        projectList.innerHTML = '';
+    }
+    
+    function removeProject(e) {
+        let index = e.target.parentNode.dataset.order;
+        _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.splice(index, 1);
+        clearCurrentProjects();
+        displayProjects();
+    }
+    
+    const displayProjects = () => {
+        _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.forEach((project, index) => {
+            const projectDiv = document.createElement('div');
+            const removeBtn = document.createElement('button');
+            projectDiv.classList.add('project-div');
+            removeBtn.classList.add('project-remove-btn')
+            removeBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
+            let pName = document.createElement('div');
+            pName.dataset.order = index;
+            pName.classList.add('project-name');
+            pName.innerText = project.name;
+            console.log(pName);
+            projectDiv.append(pName);
+            projectDiv.append(removeBtn);
+            projectList.append(projectDiv);
+            removeBtn.addEventListener('click', removeProject);
+        });
+    }
+    
+    newProjectForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const projectName = document.getElementById('name').value;
+        const newProject = new _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.Project(projectName);
+        (0,_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.addNewProject)(newProject);
+        console.log(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects);
+        clearCurrentProjects();
+        displayProjects();
+        newProjectForm.reset();
     });
-}
+})();
 
-_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.newProjectForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const projectName = document.getElementById('name').value;
-    const newProject = new _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.Project(projectName);
-    addNewProject(newProject);
-    clearCurrentProjects();
-    displayProjects();
-    _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.newProjectForm.reset();
-});
+const displayProjectContent = (() => {
+    const projectList = document.querySelector('.project-list');
+    const projectContent = document.querySelector('.project-content');
+    const pName = document.querySelector('.project-name');
+    function loadProject(e) {
+        const pcDiv = document.createElement('div');
+        pcDiv.classList.add('pc-div');
+        const pcName = document.createElement('div');
+        const addBtn = document.querySelector('.add-btn');
+        addBtn.addEventListener('click', renderTodoForm());
+        pcName.innerText = e.target.innerText;
+        pcDiv.append(pcName);
+        pcDiv.append(addBtn);
+        projectContent.append(pcDiv);
+    }
+    projectList.addEventListener('click', loadProject);
+})();
+
+
 
 
 
@@ -119,9 +137,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _displayController_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./displayController.js */ "./src/displayController.js");
 
 
-(0,_displayController_js__WEBPACK_IMPORTED_MODULE_0__.renderTodoForm)();
-(0,_displayController_js__WEBPACK_IMPORTED_MODULE_0__.renderProjectForm)();
-
+const initialize = (() => {
+    (0,_displayController_js__WEBPACK_IMPORTED_MODULE_0__.renderProjectForm)();
+})();
 
 /***/ }),
 
@@ -135,16 +153,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "myProjects": () => /* binding */ myProjects,
 /* harmony export */   "newProjectForm": () => /* binding */ newProjectForm,
-/* harmony export */   "Project": () => /* binding */ Project
+/* harmony export */   "Project": () => /* binding */ Project,
+/* harmony export */   "addNewProject": () => /* binding */ addNewProject
 /* harmony export */ });
 const myProjects = [];
 const newProjectForm = document.querySelector('.project-modal-form');
 
 class Project {
-    constructor(name) {
-        //this.id = id;
+    constructor(name, todoList) {
         this.name = name;
+        this.todoList = [];
     }
+}
+
+const addNewProject = (project) => {
+    myProjects.push(project);
 }
 
 

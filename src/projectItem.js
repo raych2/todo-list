@@ -2,9 +2,14 @@ const myProjects = [];
 const newProjectForm = document.querySelector('.project-modal-form');
 
 class Project {
-    constructor(name) {
+    constructor(name, todoList) {
         this.name = name;
+        this.todoList = [];
     }
 }
 
-export {myProjects, newProjectForm, Project};
+const addNewProject = (project) => {
+    myProjects.push(project);
+}
+
+export {myProjects, newProjectForm, Project, addNewProject};
