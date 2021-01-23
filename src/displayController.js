@@ -1,4 +1,5 @@
-import {myProjects, Project, addNewProject} from './projectItem.js';
+import {myProjects, Project, addNewProject, addNewTodo, deleteTodo} from './projectItem.js';
+import { Todo, myTodos } from './todoItem';
 
 const renderTodoForm = () => {
     const newTodoForm = document.getElementById('newTodoForm');
@@ -68,7 +69,6 @@ const displayProjectList = (() => {
             pName.dataset.order = index;
             pName.classList.add('project-name');
             pName.innerText = project.name;
-            console.log(pName);
             projectDiv.append(pName);
             projectDiv.append(removeBtn);
             projectList.append(projectDiv);
@@ -81,7 +81,6 @@ const displayProjectList = (() => {
         const projectName = document.getElementById('name').value;
         const newProject = new Project(projectName);
         addNewProject(newProject);
-        console.log(myProjects);
         clearCurrentProjects();
         displayProjects();
         newProjectForm.reset();
@@ -106,6 +105,73 @@ const displayProjectContent = (() => {
     projectList.addEventListener('click', loadProject);
 })();
 
+const displayTodoList = (() => {
+    const projectTodoContent = document.querySelector('.project-todo-content');
+    const todoForm = document.querySelector('.modal-form');
+
+    function clearCurrentTodos() {
+        projectTodoContent.innerHTML = '';
+    }
+
+    function removeTodo(e) {
+        let index = e.target.parentNode.dataset.order;
+        deleteTodo();
+        clearCurrentTodos();
+        displayTodo();
+    }
+
+    function generateElement(element, type, elemTxt, className) {
+        let newEl = document.createElement(element);
+        if (type !== '') {
+            newEl.textContent = `${type}: ${elemTxt}`;
+        } else {
+            newEl.textContent = elemTxt;
+        }
+        newEl.classList.add(className);
+        return newEl;
+    }
+
+    const displayTodo = () => {
+        for(let project of myProjects) {
+            project.todoList.forEach((todo, index) => {
+                const todoDiv = document.createElement('div');
+                todoDiv.classList.add('todo-div');
+                todoDiv.dataset.order = index;
+                const removeTodoBtn = document.createElement('button');
+                removeTodoBtn.classList.add('todo-remove-btn');
+                removeTodoBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
+                let todoTitle = generateElement('div', '', todo.title, 'tdT');
+                let todoDescription = generateElement('div', '', todo.description, 'tdDesc');
+                let todoDueDate = generateElement('div', 'Due Date', todo.dueDate, 'tdDate');
+                let todoPriority = generateElement('div', 'Priority', todo.priority, 'tdP');
+                todoDiv.append(todoTitle);
+                todoDiv.append(todoDescription);
+                todoDiv.append(todoDueDate);
+                todoDiv.append(todoPriority);
+                todoDiv.append(removeTodoBtn);
+                projectTodoContent.append(todoDiv);
+                removeTodoBtn.addEventListener('click', removeTodo);
+            });
+        }
+    }
+
+    todoForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+    
+        const tdTitle = document.getElementById('title').value;
+        const tdDescription = document.getElementById('description').value;
+        const tdDueDate = document.getElementById('dueDate').value;
+        const tdPriority = document.getElementById('priority').value;
+    
+        const newTodo = new Todo(tdTitle, tdDescription, tdDueDate, tdPriority);
+        addNewTodo(newTodo);
+        clearCurrentTodos();
+        displayTodo();
+        todoForm.reset();
+    });
+
+})();
 
 
-export {renderProjectForm};
+
+export {renderProjectForm, displayProjectContent};
