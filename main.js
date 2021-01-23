@@ -10,9 +10,12 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "renderProjectForm": () => /* binding */ renderProjectForm
+/* harmony export */   "renderProjectForm": () => /* binding */ renderProjectForm,
+/* harmony export */   "displayProjectContent": () => /* binding */ displayProjectContent
 /* harmony export */ });
 /* harmony import */ var _projectItem_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./projectItem.js */ "./src/projectItem.js");
+/* harmony import */ var _todoItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todoItem */ "./src/todoItem.js");
+
 
 
 const renderTodoForm = () => {
@@ -83,7 +86,6 @@ const displayProjectList = (() => {
             pName.dataset.order = index;
             pName.classList.add('project-name');
             pName.innerText = project.name;
-            console.log(pName);
             projectDiv.append(pName);
             projectDiv.append(removeBtn);
             projectList.append(projectDiv);
@@ -96,7 +98,6 @@ const displayProjectList = (() => {
         const projectName = document.getElementById('name').value;
         const newProject = new _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.Project(projectName);
         (0,_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.addNewProject)(newProject);
-        console.log(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects);
         clearCurrentProjects();
         displayProjects();
         newProjectForm.reset();
@@ -119,6 +120,73 @@ const displayProjectContent = (() => {
         projectContent.append(pcDiv);
     }
     projectList.addEventListener('click', loadProject);
+})();
+
+const displayTodoList = (() => {
+    const projectTodoContent = document.querySelector('.project-todo-content');
+    const todoForm = document.querySelector('.modal-form');
+
+    function clearCurrentTodos() {
+        projectTodoContent.innerHTML = '';
+    }
+
+    function removeTodo(e) {
+        let index = e.target.parentNode.dataset.order;
+        (0,_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.deleteTodo)();
+        clearCurrentTodos();
+        displayTodo();
+    }
+
+    function generateElement(element, type, elemTxt, className) {
+        let newEl = document.createElement(element);
+        if (type !== '') {
+            newEl.textContent = `${type}: ${elemTxt}`;
+        } else {
+            newEl.textContent = elemTxt;
+        }
+        newEl.classList.add(className);
+        return newEl;
+    }
+
+    const displayTodo = () => {
+        for(let project of _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects) {
+            project.todoList.forEach((todo, index) => {
+                const todoDiv = document.createElement('div');
+                todoDiv.classList.add('todo-div');
+                todoDiv.dataset.order = index;
+                const removeTodoBtn = document.createElement('button');
+                removeTodoBtn.classList.add('todo-remove-btn');
+                removeTodoBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
+                let todoTitle = generateElement('div', '', todo.title, 'tdT');
+                let todoDescription = generateElement('div', '', todo.description, 'tdDesc');
+                let todoDueDate = generateElement('div', 'Due Date', todo.dueDate, 'tdDate');
+                let todoPriority = generateElement('div', 'Priority', todo.priority, 'tdP');
+                todoDiv.append(todoTitle);
+                todoDiv.append(todoDescription);
+                todoDiv.append(todoDueDate);
+                todoDiv.append(todoPriority);
+                todoDiv.append(removeTodoBtn);
+                projectTodoContent.append(todoDiv);
+                removeTodoBtn.addEventListener('click', removeTodo);
+            });
+        }
+    }
+
+    todoForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+    
+        const tdTitle = document.getElementById('title').value;
+        const tdDescription = document.getElementById('description').value;
+        const tdDueDate = document.getElementById('dueDate').value;
+        const tdPriority = document.getElementById('priority').value;
+    
+        const newTodo = new _todoItem__WEBPACK_IMPORTED_MODULE_1__.Todo(tdTitle, tdDescription, tdDueDate, tdPriority);
+        (0,_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.addNewTodo)(newTodo);
+        clearCurrentTodos();
+        displayTodo();
+        todoForm.reset();
+    });
+
 })();
 
 
@@ -154,21 +222,67 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "myProjects": () => /* binding */ myProjects,
 /* harmony export */   "newProjectForm": () => /* binding */ newProjectForm,
 /* harmony export */   "Project": () => /* binding */ Project,
-/* harmony export */   "addNewProject": () => /* binding */ addNewProject
+/* harmony export */   "addNewProject": () => /* binding */ addNewProject,
+/* harmony export */   "addNewTodo": () => /* binding */ addNewTodo,
+/* harmony export */   "deleteTodo": () => /* binding */ deleteTodo
 /* harmony export */ });
+/* harmony import */ var _todoItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todoItem */ "./src/todoItem.js");
+
+
 const myProjects = [];
 const newProjectForm = document.querySelector('.project-modal-form');
 
 class Project {
-    constructor(name, todoList) {
+    constructor(name) {
         this.name = name;
         this.todoList = [];
+    }
+}
+
+const addNewTodo = (todo) => {
+    for(let project of myProjects) {
+        project.todoList.push(todo);
+    }
+}
+
+const deleteTodo = (index) => {
+    for(let project of myProjects) {
+        project.todoList.splice(index, 1);
     }
 }
 
 const addNewProject = (project) => {
     myProjects.push(project);
 }
+
+
+
+
+/***/ }),
+
+/***/ "./src/todoItem.js":
+/*!*************************!*\
+  !*** ./src/todoItem.js ***!
+  \*************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "myTodos": () => /* binding */ myTodos,
+/* harmony export */   "Todo": () => /* binding */ Todo
+/* harmony export */ });
+class Todo {
+    constructor (title, description, dueDate, priority) {
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.priority = priority;
+    }
+}
+
+//default todo list
+const myTodos = [];
+
 
 
 

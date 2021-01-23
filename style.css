@@ -22,7 +22,7 @@ header i {
     margin: 20px 20px 20px 50px;
     font: 700 2.5em 'Roboto Condensed', sans-serif;
 }
-.add-btn, .cancel-btn, .project-add-btn, .project-cancel-btn, .project-remove-btn {
+.add-btn, .cancel-btn, .project-add-btn, .project-cancel-btn, .project-remove-btn, .todo-remove-btn {
     background: transparent no-repeat;
     border: none;
     outline: none;
@@ -62,7 +62,7 @@ header i {
     width: 100%;
     font: 400 1.5em 'Roboto Condensed', sans-serif;
 }
-.project-content {
+.project-content, .project-todo-content {
     display: flex;
     flex-flow: column nowrap;
     position: fixed;
@@ -72,6 +72,16 @@ header i {
     height: 100%;
     font: 400 1.5em 'Roboto Condensed', sans-serif;
 }
+.project-todo-content {
+    display: flex;
+    flex-flow: column nowrap;
+    position: fixed;
+    margin: 100px auto 100px 400px;
+    min-width: 800px;
+    width: 810px;
+    height: 100%;
+    font: 400 1.1em 'Roboto Condensed', sans-serif;
+}
 .pc-div {
     display: flex;
     flex-flow: row nowrap;
@@ -79,6 +89,13 @@ header i {
     align-items: center;
     width: 100%;
     font: 400 1.5em 'Roboto Condensed', sans-serif;
+}
+.todo-div {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 .modal {
     display: none;
