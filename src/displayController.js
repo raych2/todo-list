@@ -1,10 +1,14 @@
-import {myProjects, Project, addNewProject, addNewTodo, deleteTodo} from './projectItem.js';
+import { myProjects, Project, addNewProject, addNewTodo, deleteTodo } from './projectItem.js';
 import { Todo, myTodos } from './todoItem';
 
 const renderTodoForm = () => {
     const newTodoForm = document.getElementById('newTodoForm');
     const addBtn = document.querySelector('.add-btn');
     const cancelBtn = document.querySelector('.cancel-btn');
+    const date = document.getElementById('dueDate');
+
+    //set calendar's due date to today's date
+    date.value = new Date().toLocaleDateString('en-CA');
     
     function openForm(e) {
         newTodoForm.style.display = 'block';
