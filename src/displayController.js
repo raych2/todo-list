@@ -79,8 +79,8 @@ const displayProjectList = (() => {
             projectDiv.classList.add('project-div');
             removeBtn.classList.add('project-remove-btn')
             removeBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
-            let pName = document.createElement('div');
-            pName.dataset.order = index;
+            removeBtn.dataset.order = index;
+            const pName = document.createElement('div');
             pName.classList.add('project-name');
             pName.innerText = project.name;
             projectDiv.append(pName);
