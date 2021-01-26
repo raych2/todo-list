@@ -1,7 +1,17 @@
 import { myProjects, Project, addNewProject, addNewTodo, deleteTodo } from './projectItem.js';
 import { Todo, myTodos } from './todoItem';
 
-const renderTodoForm = () => {
+const hideAddButton = () => {
+    const addBtn = document.querySelector('.add-btn');
+    addBtn.style.display = 'none';
+}
+
+const showAddButton = () => {
+    const addBtn = document.querySelector('.add-btn');
+    addBtn.style.display = 'flex';
+}
+
+const renderTodoForm = (e) => {
     const newTodoForm = document.getElementById('newTodoForm');
     const addBtn = document.querySelector('.add-btn');
     const cancelBtn = document.querySelector('.cancel-btn');
@@ -91,19 +101,22 @@ const displayProjectList = (() => {
     });
 })();
 
-const displayProjectContent = (() => {
+const displayProjectName = (() => {
     const projectList = document.querySelector('.project-list');
     const projectContent = document.querySelector('.project-content');
+    const projectTodoContent = document.querySelector('.project-todo-content');
     const pName = document.querySelector('.project-name');
     function loadProject(e) {
+        projectContent.innerHTML = '';
+        projectTodoContent.innerHTML = '';
         const pcDiv = document.createElement('div');
         pcDiv.classList.add('pc-div');
         const pcName = document.createElement('div');
         const addBtn = document.querySelector('.add-btn');
-        addBtn.addEventListener('click', renderTodoForm());
+        showAddButton();
+        addBtn.addEventListener('click', renderTodoForm);
         pcName.innerText = e.target.innerText;
         pcDiv.append(pcName);
-        pcDiv.append(addBtn);
         projectContent.append(pcDiv);
     }
     projectList.addEventListener('click', loadProject);
@@ -161,7 +174,7 @@ const displayTodoList = (() => {
 
     todoForm.addEventListener('submit', (e) => {
         e.preventDefault();
-    
+
         const tdTitle = document.getElementById('title').value;
         const tdDescription = document.getElementById('description').value;
         const tdDueDate = document.getElementById('dueDate').value;
@@ -178,4 +191,4 @@ const displayTodoList = (() => {
 
 
 
-export {renderProjectForm, displayProjectContent};
+export {renderProjectForm, displayProjectName, hideAddButton};

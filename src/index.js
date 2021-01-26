@@ -1,5 +1,6 @@
-import { renderProjectForm } from './displayController.js';
+import { hideAddButton, renderProjectForm } from './displayController.js';
 
 const initialize = (() => {
+    hideAddButton();
     renderProjectForm();
 })();

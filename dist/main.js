@@ -3211,14 +3211,25 @@ function toDate(argument) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "renderProjectForm": () => /* binding */ renderProjectForm,
-/* harmony export */   "displayProjectContent": () => /* binding */ displayProjectContent
+/* harmony export */   "displayProjectName": () => /* binding */ displayProjectName,
+/* harmony export */   "hideAddButton": () => /* binding */ hideAddButton
 /* harmony export */ });
 /* harmony import */ var _projectItem_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./projectItem.js */ "./src/projectItem.js");
 /* harmony import */ var _todoItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todoItem */ "./src/todoItem.js");
 
 
 
-const renderTodoForm = () => {
+const hideAddButton = () => {
+    const addBtn = document.querySelector('.add-btn');
+    addBtn.style.display = 'none';
+}
+
+const showAddButton = () => {
+    const addBtn = document.querySelector('.add-btn');
+    addBtn.style.display = 'flex';
+}
+
+const renderTodoForm = (e) => {
     const newTodoForm = document.getElementById('newTodoForm');
     const addBtn = document.querySelector('.add-btn');
     const cancelBtn = document.querySelector('.cancel-btn');
@@ -3308,19 +3319,22 @@ const displayProjectList = (() => {
     });
 })();
 
-const displayProjectContent = (() => {
+const displayProjectName = (() => {
     const projectList = document.querySelector('.project-list');
     const projectContent = document.querySelector('.project-content');
+    const projectTodoContent = document.querySelector('.project-todo-content');
     const pName = document.querySelector('.project-name');
     function loadProject(e) {
+        projectContent.innerHTML = '';
+        projectTodoContent.innerHTML = '';
         const pcDiv = document.createElement('div');
         pcDiv.classList.add('pc-div');
         const pcName = document.createElement('div');
         const addBtn = document.querySelector('.add-btn');
-        addBtn.addEventListener('click', renderTodoForm());
+        showAddButton();
+        addBtn.addEventListener('click', renderTodoForm);
         pcName.innerText = e.target.innerText;
         pcDiv.append(pcName);
-        pcDiv.append(addBtn);
         projectContent.append(pcDiv);
     }
     projectList.addEventListener('click', loadProject);
@@ -3378,7 +3392,7 @@ const displayTodoList = (() => {
 
     todoForm.addEventListener('submit', (e) => {
         e.preventDefault();
-    
+
         const tdTitle = document.getElementById('title').value;
         const tdDescription = document.getElementById('description').value;
         const tdDueDate = document.getElementById('dueDate').value;
@@ -3410,6 +3424,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const initialize = (() => {
+    (0,_displayController_js__WEBPACK_IMPORTED_MODULE_0__.hideAddButton)();
     (0,_displayController_js__WEBPACK_IMPORTED_MODULE_0__.renderProjectForm)();
 })();
 
