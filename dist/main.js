@@ -3211,13 +3211,16 @@ function toDate(argument) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "renderProjectForm": () => /* binding */ renderProjectForm,
-/* harmony export */   "displayProjectName": () => /* binding */ displayProjectName,
-/* harmony export */   "hideAddButton": () => /* binding */ hideAddButton
+/* harmony export */   "hideAddButton": () => /* binding */ hideAddButton,
+/* harmony export */   "displayTodoList": () => /* binding */ displayTodoList,
+/* harmony export */   "currentProject": () => /* binding */ currentProject
 /* harmony export */ });
 /* harmony import */ var _projectItem_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./projectItem.js */ "./src/projectItem.js");
 /* harmony import */ var _todoItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todoItem */ "./src/todoItem.js");
 
 
+
+let currentProject;
 
 const hideAddButton = () => {
     const addBtn = document.querySelector('.add-btn');
@@ -3287,16 +3290,17 @@ const displayProjectList = (() => {
         let index = e.target.parentNode.dataset.order;
         _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.splice(index, 1);
         clearCurrentProjects();
-        displayProjects();
+        displayProjectNames();
     }
     
-    const displayProjects = () => {
+    const displayProjectNames = () => {
         _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.forEach((project, index) => {
             const projectDiv = document.createElement('div');
             const removeBtn = document.createElement('button');
             projectDiv.classList.add('project-div');
             removeBtn.classList.add('project-remove-btn')
             removeBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
+            projectDiv.dataset.order = index;
             removeBtn.dataset.order = index;
             const pName = document.createElement('div');
             pName.classList.add('project-name');
@@ -3307,6 +3311,12 @@ const displayProjectList = (() => {
             removeBtn.addEventListener('click', removeProject);
         });
     }
+
+    function assignProjectId() {
+        _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.forEach((project, index) => {
+            project.id = index;
+        });
+    }
     
     newProjectForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -3314,43 +3324,52 @@ const displayProjectList = (() => {
         const newProject = new _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.Project(projectName);
         (0,_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.addNewProject)(newProject);
         clearCurrentProjects();
-        displayProjects();
+        displayProjectNames();
+        assignProjectId();
         newProjectForm.reset();
     });
 })();
 
-const displayProjectName = (() => {
+const displayProject = (() => {
     const projectList = document.querySelector('.project-list');
     const projectContent = document.querySelector('.project-content');
     const projectTodoContent = document.querySelector('.project-todo-content');
-    const pName = document.querySelector('.project-name');
     function loadProject(e) {
+        for (let project of _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects) {
+            if(project.name === e.target.innerText) {
+                let index = project.id
+                currentProject = _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects[index];
+            }
+        }
         projectContent.innerHTML = '';
         projectTodoContent.innerHTML = '';
         const pcDiv = document.createElement('div');
         pcDiv.classList.add('pc-div');
+        pcDiv.dataset.id = currentProject;
         const pcName = document.createElement('div');
+        pcName.classList.add('pcName');
         const addBtn = document.querySelector('.add-btn');
         showAddButton();
         addBtn.addEventListener('click', renderTodoForm);
         pcName.innerText = e.target.innerText;
         pcDiv.append(pcName);
         projectContent.append(pcDiv);
+        displayTodoList();
     }
     projectList.addEventListener('click', loadProject);
 })();
 
-const displayTodoList = (() => {
+const displayTodoList = () => {
     const projectTodoContent = document.querySelector('.project-todo-content');
     const todoForm = document.querySelector('.modal-form');
 
     function clearCurrentTodos() {
         projectTodoContent.innerHTML = '';
     }
-
+    
     function removeTodo(e) {
         let index = e.target.parentNode.dataset.order;
-        (0,_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.deleteTodo)();
+        currentProject.deleteTodo();
         clearCurrentTodos();
         displayTodo();
     }
@@ -3367,27 +3386,25 @@ const displayTodoList = (() => {
     }
 
     const displayTodo = () => {
-        for(let project of _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects) {
-            project.todoList.forEach((todo, index) => {
-                const todoDiv = document.createElement('div');
-                todoDiv.classList.add('todo-div');
-                todoDiv.dataset.order = index;
-                const removeTodoBtn = document.createElement('button');
-                removeTodoBtn.classList.add('todo-remove-btn');
-                removeTodoBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
-                let todoTitle = generateElement('div', '', todo.title, 'tdT');
-                let todoDescription = generateElement('div', '', todo.description, 'tdDesc');
-                let todoDueDate = generateElement('div', 'Due Date', todo.dueDate, 'tdDate');
-                let todoPriority = generateElement('div', 'Priority', todo.priority, 'tdP');
-                todoDiv.append(todoTitle);
-                todoDiv.append(todoDescription);
-                todoDiv.append(todoDueDate);
-                todoDiv.append(todoPriority);
-                todoDiv.append(removeTodoBtn);
-                projectTodoContent.append(todoDiv);
-                removeTodoBtn.addEventListener('click', removeTodo);
-            });
-        }
+        currentProject.todoList.forEach((todo, index) => {
+            const todoDiv = document.createElement('div');
+            todoDiv.classList.add('todo-div');
+            todoDiv.dataset.order = index;
+            const removeTodoBtn = document.createElement('button');
+            removeTodoBtn.classList.add('todo-remove-btn');
+            removeTodoBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
+            let todoTitle = generateElement('div', '', todo.title, 'tdT');
+            let todoDescription = generateElement('div', '', todo.description, 'tdDesc');
+            let todoDueDate = generateElement('div', 'Due Date', todo.dueDate, 'tdDate');
+            let todoPriority = generateElement('div', 'Priority', todo.priority, 'tdP');
+            todoDiv.append(todoTitle);
+            todoDiv.append(todoDescription);
+            todoDiv.append(todoDueDate);
+            todoDiv.append(todoPriority);
+            todoDiv.append(removeTodoBtn);
+            projectTodoContent.append(todoDiv);
+            removeTodoBtn.addEventListener('click', removeTodo);
+        });
     }
 
     todoForm.addEventListener('submit', (e) => {
@@ -3399,13 +3416,13 @@ const displayTodoList = (() => {
         const tdPriority = document.getElementById('priority').value;
     
         const newTodo = new _todoItem__WEBPACK_IMPORTED_MODULE_1__.Todo(tdTitle, tdDescription, tdDueDate, tdPriority);
-        (0,_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.addNewTodo)(newTodo);
+        currentProject.addNewTodo(newTodo);
         clearCurrentTodos();
         displayTodo();
         todoForm.reset();
     });
 
-})();
+};
 
 
 
@@ -3421,12 +3438,19 @@ const displayTodoList = (() => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _displayController_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./displayController.js */ "./src/displayController.js");
+/* harmony import */ var _projectItem_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./projectItem.js */ "./src/projectItem.js");
 
+
+
+const projectList = document.querySelector('.project-list');
 
 const initialize = (() => {
     (0,_displayController_js__WEBPACK_IMPORTED_MODULE_0__.hideAddButton)();
     (0,_displayController_js__WEBPACK_IMPORTED_MODULE_0__.renderProjectForm)();
+    //displayTodoList(currentProject);
 })();
+
+
 
 /***/ }),
 
@@ -3441,9 +3465,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "myProjects": () => /* binding */ myProjects,
 /* harmony export */   "newProjectForm": () => /* binding */ newProjectForm,
 /* harmony export */   "Project": () => /* binding */ Project,
-/* harmony export */   "addNewProject": () => /* binding */ addNewProject,
-/* harmony export */   "addNewTodo": () => /* binding */ addNewTodo,
-/* harmony export */   "deleteTodo": () => /* binding */ deleteTodo
+/* harmony export */   "addNewProject": () => /* binding */ addNewProject
 /* harmony export */ });
 /* harmony import */ var _todoItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todoItem */ "./src/todoItem.js");
 
@@ -3452,21 +3474,16 @@ const myProjects = [];
 const newProjectForm = document.querySelector('.project-modal-form');
 
 class Project {
-    constructor(name) {
+    constructor(name, id) {
         this.name = name;
         this.todoList = [];
+        this.id = id;
     }
-}
-
-const addNewTodo = (todo) => {
-    for(let project of myProjects) {
-        project.todoList.push(todo);
+    addNewTodo(todo) {
+        this.todoList.push(todo);
     }
-}
-
-const deleteTodo = (index) => {
-    for(let project of myProjects) {
-        project.todoList.splice(index, 1);
+    deleteTodo(index) {
+        this.todoList.splice(index, 1);
     }
 }
 

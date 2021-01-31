@@ -1,5 +1,7 @@
-import { myProjects, Project, addNewProject, addNewTodo, deleteTodo } from './projectItem.js';
-import { Todo, myTodos } from './todoItem';
+import { myProjects, Project, addNewProject } from './projectItem.js';
+import { Todo } from './todoItem';
+
+let currentProject;
 
 const hideAddButton = () => {
     const addBtn = document.querySelector('.add-btn');
@@ -69,16 +71,17 @@ const displayProjectList = (() => {
         let index = e.target.parentNode.dataset.order;
         myProjects.splice(index, 1);
         clearCurrentProjects();
-        displayProjects();
+        displayProjectNames();
     }
     
-    const displayProjects = () => {
+    const displayProjectNames = () => {
         myProjects.forEach((project, index) => {
             const projectDiv = document.createElement('div');
             const removeBtn = document.createElement('button');
             projectDiv.classList.add('project-div');
             removeBtn.classList.add('project-remove-btn')
             removeBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
+            projectDiv.dataset.order = index;
             removeBtn.dataset.order = index;
             const pName = document.createElement('div');
             pName.classList.add('project-name');
@@ -89,6 +92,12 @@ const displayProjectList = (() => {
             removeBtn.addEventListener('click', removeProject);
         });
     }
+
+    function assignProjectId() {
+        myProjects.forEach((project, index) => {
+            project.id = index;
+        });
+    }
     
     newProjectForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -96,43 +105,52 @@ const displayProjectList = (() => {
         const newProject = new Project(projectName);
         addNewProject(newProject);
         clearCurrentProjects();
-        displayProjects();
+        displayProjectNames();
+        assignProjectId();
         newProjectForm.reset();
     });
 })();
 
-const displayProjectName = (() => {
+const displayProject = (() => {
     const projectList = document.querySelector('.project-list');
     const projectContent = document.querySelector('.project-content');
     const projectTodoContent = document.querySelector('.project-todo-content');
-    const pName = document.querySelector('.project-name');
     function loadProject(e) {
+        for (let project of myProjects) {
+            if(project.name === e.target.innerText) {
+                let index = project.id
+                currentProject = myProjects[index];
+            }
+        }
         projectContent.innerHTML = '';
         projectTodoContent.innerHTML = '';
         const pcDiv = document.createElement('div');
         pcDiv.classList.add('pc-div');
+        pcDiv.dataset.id = currentProject;
         const pcName = document.createElement('div');
+        pcName.classList.add('pcName');
         const addBtn = document.querySelector('.add-btn');
         showAddButton();
         addBtn.addEventListener('click', renderTodoForm);
         pcName.innerText = e.target.innerText;
         pcDiv.append(pcName);
         projectContent.append(pcDiv);
+        displayTodoList();
     }
     projectList.addEventListener('click', loadProject);
 })();
 
-const displayTodoList = (() => {
+const displayTodoList = () => {
     const projectTodoContent = document.querySelector('.project-todo-content');
     const todoForm = document.querySelector('.modal-form');
 
     function clearCurrentTodos() {
         projectTodoContent.innerHTML = '';
     }
-
+    
     function removeTodo(e) {
         let index = e.target.parentNode.dataset.order;
-        deleteTodo();
+        currentProject.deleteTodo();
         clearCurrentTodos();
         displayTodo();
     }
@@ -149,27 +167,25 @@ const displayTodoList = (() => {
     }
 
     const displayTodo = () => {
-        for(let project of myProjects) {
-            project.todoList.forEach((todo, index) => {
-                const todoDiv = document.createElement('div');
-                todoDiv.classList.add('todo-div');
-                todoDiv.dataset.order = index;
-                const removeTodoBtn = document.createElement('button');
-                removeTodoBtn.classList.add('todo-remove-btn');
-                removeTodoBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
-                let todoTitle = generateElement('div', '', todo.title, 'tdT');
-                let todoDescription = generateElement('div', '', todo.description, 'tdDesc');
-                let todoDueDate = generateElement('div', 'Due Date', todo.dueDate, 'tdDate');
-                let todoPriority = generateElement('div', 'Priority', todo.priority, 'tdP');
-                todoDiv.append(todoTitle);
-                todoDiv.append(todoDescription);
-                todoDiv.append(todoDueDate);
-                todoDiv.append(todoPriority);
-                todoDiv.append(removeTodoBtn);
-                projectTodoContent.append(todoDiv);
-                removeTodoBtn.addEventListener('click', removeTodo);
-            });
-        }
+        currentProject.todoList.forEach((todo, index) => {
+            const todoDiv = document.createElement('div');
+            todoDiv.classList.add('todo-div');
+            todoDiv.dataset.order = index;
+            const removeTodoBtn = document.createElement('button');
+            removeTodoBtn.classList.add('todo-remove-btn');
+            removeTodoBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
+            let todoTitle = generateElement('div', '', todo.title, 'tdT');
+            let todoDescription = generateElement('div', '', todo.description, 'tdDesc');
+            let todoDueDate = generateElement('div', 'Due Date', todo.dueDate, 'tdDate');
+            let todoPriority = generateElement('div', 'Priority', todo.priority, 'tdP');
+            todoDiv.append(todoTitle);
+            todoDiv.append(todoDescription);
+            todoDiv.append(todoDueDate);
+            todoDiv.append(todoPriority);
+            todoDiv.append(removeTodoBtn);
+            projectTodoContent.append(todoDiv);
+            removeTodoBtn.addEventListener('click', removeTodo);
+        });
     }
 
     todoForm.addEventListener('submit', (e) => {
@@ -181,14 +197,14 @@ const displayTodoList = (() => {
         const tdPriority = document.getElementById('priority').value;
     
         const newTodo = new Todo(tdTitle, tdDescription, tdDueDate, tdPriority);
-        addNewTodo(newTodo);
+        currentProject.addNewTodo(newTodo);
         clearCurrentTodos();
         displayTodo();
         todoForm.reset();
     });
 
-})();
+};
 
 
 
-export {renderProjectForm, displayProjectName, hideAddButton};
+export {renderProjectForm, hideAddButton, displayTodoList, currentProject};

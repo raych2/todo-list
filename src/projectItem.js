@@ -4,21 +4,16 @@ const myProjects = [];
 const newProjectForm = document.querySelector('.project-modal-form');
 
 class Project {
-    constructor(name) {
+    constructor(name, id) {
         this.name = name;
         this.todoList = [];
+        this.id = id;
     }
-}
-
-const addNewTodo = (todo) => {
-    for(let project of myProjects) {
-        project.todoList.push(todo);
+    addNewTodo(todo) {
+        this.todoList.push(todo);
     }
-}
-
-const deleteTodo = (index) => {
-    for(let project of myProjects) {
-        project.todoList.splice(index, 1);
+    deleteTodo(index) {
+        this.todoList.splice(index, 1);
     }
 }
 
@@ -27,4 +22,4 @@ const addNewProject = (project) => {
 }
 
 
-export {myProjects, newProjectForm, Project, addNewProject, addNewTodo, deleteTodo};
+export {myProjects, newProjectForm, Project, addNewProject};
