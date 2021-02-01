@@ -61,10 +61,17 @@ window.onclick = function(e) {
 
 const displayProjectList = (() => {
     const projectList = document.querySelector('.project-list');
+    const projectFormModal = document.getElementById('newProjectForm');
     const newProjectForm = document.querySelector('.project-modal-form');
     
     function clearCurrentProjects() {
         projectList.innerHTML = '';
+    }
+
+    function editProjectName(e) {
+        let index = e.target.parentNode.dataset.order;
+        myProjects.splice(index, 1);
+        projectFormModal.style.display = 'block';
     }
     
     function removeProject(e) {
@@ -77,18 +84,24 @@ const displayProjectList = (() => {
     const displayProjectNames = () => {
         myProjects.forEach((project, index) => {
             const projectDiv = document.createElement('div');
+            const editBtn = document.createElement('button');
             const removeBtn = document.createElement('button');
             projectDiv.classList.add('project-div');
+            editBtn.classList.add('project-edit-btn');
             removeBtn.classList.add('project-remove-btn');
+            editBtn.innerHTML = '<i class="far fa-edit"></i>';
             removeBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
             projectDiv.dataset.order = index;
+            editBtn.dataset.order = index;
             removeBtn.dataset.order = index;
             const pName = document.createElement('div');
             pName.classList.add('project-name');
             pName.innerText = project.name;
             projectDiv.append(pName);
+            projectDiv.append(editBtn);
             projectDiv.append(removeBtn);
             projectList.append(projectDiv);
+            editBtn.addEventListener('click', editProjectName);
             removeBtn.addEventListener('click', removeProject);
         });
     }
