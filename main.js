@@ -3298,7 +3298,7 @@ const displayProjectList = (() => {
             const projectDiv = document.createElement('div');
             const removeBtn = document.createElement('button');
             projectDiv.classList.add('project-div');
-            removeBtn.classList.add('project-remove-btn')
+            removeBtn.classList.add('project-remove-btn');
             removeBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
             projectDiv.dataset.order = index;
             removeBtn.dataset.order = index;
@@ -3337,7 +3337,7 @@ const displayProject = (() => {
     function loadProject(e) {
         for (let project of _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects) {
             if(project.name === e.target.innerText) {
-                let index = project.id
+                let index = project.id;
                 currentProject = _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects[index];
             }
         }
@@ -3360,11 +3360,18 @@ const displayProject = (() => {
 })();
 
 const displayTodoList = () => {
+    const newTodoForm = document.getElementById('newTodoForm');
     const projectTodoContent = document.querySelector('.project-todo-content');
     const todoForm = document.querySelector('.modal-form');
 
     function clearCurrentTodos() {
         projectTodoContent.innerHTML = '';
+    }
+
+    function editTodo(e) {
+        let index = e.target.parentNode.dataset.order;
+        currentProject.deleteTodo();
+        newTodoForm.style.display = 'block';
     }
     
     function removeTodo(e) {
@@ -3390,8 +3397,11 @@ const displayTodoList = () => {
             const todoDiv = document.createElement('div');
             todoDiv.classList.add('todo-div');
             todoDiv.dataset.order = index;
+            const editTodoBtn = document.createElement('button');
             const removeTodoBtn = document.createElement('button');
+            editTodoBtn.classList.add('todo-edit-btn');
             removeTodoBtn.classList.add('todo-remove-btn');
+            editTodoBtn.innerHTML = '<i class="far fa-edit"></i>';
             removeTodoBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
             let todoTitle = generateElement('div', '', todo.title, 'tdT');
             let todoDescription = generateElement('div', '', todo.description, 'tdDesc');
@@ -3401,8 +3411,10 @@ const displayTodoList = () => {
             todoDiv.append(todoDescription);
             todoDiv.append(todoDueDate);
             todoDiv.append(todoPriority);
+            todoDiv.append(editTodoBtn);
             todoDiv.append(removeTodoBtn);
             projectTodoContent.append(todoDiv);
+            editTodoBtn.addEventListener('click', editTodo);
             removeTodoBtn.addEventListener('click', removeTodo);
         });
     }
