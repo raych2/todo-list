@@ -3212,14 +3212,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "renderProjectForm": () => /* binding */ renderProjectForm,
 /* harmony export */   "hideAddButton": () => /* binding */ hideAddButton,
-/* harmony export */   "displayTodoList": () => /* binding */ displayTodoList,
-/* harmony export */   "currentProject": () => /* binding */ currentProject
+/* harmony export */   "displayProjectNames": () => /* binding */ displayProjectNames
 /* harmony export */ });
 /* harmony import */ var _projectItem_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./projectItem.js */ "./src/projectItem.js");
-/* harmony import */ var _todoItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todoItem */ "./src/todoItem.js");
+/* harmony import */ var _todoItem_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./todoItem.js */ "./src/todoItem.js");
 
 
 
+const projectList = document.querySelector('.project-list');
+const projectFormModal = document.getElementById('newProjectForm');
+const newProjectForm = document.querySelector('.project-modal-form');
+const projectContent = document.querySelector('.project-content');
+const projectTodoContent = document.querySelector('.project-todo-content');
+const newTodoForm = document.getElementById('newTodoForm');
+const todoForm = document.querySelector('.modal-form');
 let currentProject;
 
 const hideAddButton = () => {
@@ -3274,182 +3280,168 @@ window.onclick = function(e) {
     if (e.target === newTodoForm) {
         newTodoForm.style.display = "none";
     } else if (e.target === newProjectForm) {
-        newProjectForm.style.display = "none";
+        projectFormModal.style.display = "none";
     }
 }
+    
+function clearCurrentProjects() {
+    projectList.innerHTML = '';
+}
 
-const displayProjectList = (() => {
-    const projectList = document.querySelector('.project-list');
-    const projectFormModal = document.getElementById('newProjectForm');
-    const newProjectForm = document.querySelector('.project-modal-form');
+function editProjectName(e) {
+    let index = e.target.parentNode.dataset.order;
+    _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.splice(index, 1);
+    projectFormModal.style.display = 'block';
+    localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
+}
     
-    function clearCurrentProjects() {
-        projectList.innerHTML = '';
-    }
-
-    function editProjectName(e) {
-        let index = e.target.parentNode.dataset.order;
-        _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.splice(index, 1);
-        projectFormModal.style.display = 'block';
-    }
+function removeProject(e) {
+    let index = e.target.parentNode.dataset.order;
+    _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.splice(index, 1);
+    localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
+    clearCurrentProjects();
+    displayProjectNames();
+}
     
-    function removeProject(e) {
-        let index = e.target.parentNode.dataset.order;
-        _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.splice(index, 1);
-        clearCurrentProjects();
-        displayProjectNames();
-    }
-    
-    const displayProjectNames = () => {
-        _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.forEach((project, index) => {
-            const projectDiv = document.createElement('div');
-            const editBtn = document.createElement('button');
-            const removeBtn = document.createElement('button');
-            projectDiv.classList.add('project-div');
-            editBtn.classList.add('project-edit-btn');
-            removeBtn.classList.add('project-remove-btn');
-            editBtn.innerHTML = '<i class="far fa-edit"></i>';
-            removeBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
-            projectDiv.dataset.order = index;
-            editBtn.dataset.order = index;
-            removeBtn.dataset.order = index;
-            const pName = document.createElement('div');
-            pName.classList.add('project-name');
-            pName.innerText = project.name;
-            projectDiv.append(pName);
-            projectDiv.append(editBtn);
-            projectDiv.append(removeBtn);
-            projectList.append(projectDiv);
-            editBtn.addEventListener('click', editProjectName);
-            removeBtn.addEventListener('click', removeProject);
-        });
-    }
-
-    function assignProjectId() {
-        _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.forEach((project, index) => {
-            project.id = index;
-        });
-    }
-    
-    newProjectForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const projectName = document.getElementById('name').value;
-        const newProject = new _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.Project(projectName);
-        (0,_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.addNewProject)(newProject);
-        clearCurrentProjects();
-        displayProjectNames();
-        assignProjectId();
-        newProjectForm.reset();
+const displayProjectNames = () => {
+    _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.forEach((project, index) => {
+        const projectDiv = document.createElement('div');
+        const editBtn = document.createElement('button');
+        const removeBtn = document.createElement('button');
+        projectDiv.classList.add('project-div');
+        editBtn.classList.add('project-edit-btn');
+        removeBtn.classList.add('project-remove-btn');
+        editBtn.innerHTML = '<i class="far fa-edit"></i>';
+        removeBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
+        projectDiv.dataset.order = index;
+        editBtn.dataset.order = index;
+        removeBtn.dataset.order = index;
+        const pName = document.createElement('div');
+        pName.classList.add('project-name');
+        pName.innerText = project.name;
+        projectDiv.append(pName);
+        projectDiv.append(editBtn);
+        projectDiv.append(removeBtn);
+        projectList.append(projectDiv);
+        editBtn.addEventListener('click', editProjectName);
+        removeBtn.addEventListener('click', removeProject);
     });
-})();
+}
 
-const displayProject = (() => {
-    const projectList = document.querySelector('.project-list');
-    const projectContent = document.querySelector('.project-content');
-    const projectTodoContent = document.querySelector('.project-todo-content');
-    function loadProject(e) {
-        for (let project of _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects) {
-            if(project.name === e.target.innerText) {
-                let index = project.id;
-                currentProject = _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects[index];
-            }
-        }
-        projectContent.innerHTML = '';
-        projectTodoContent.innerHTML = '';
-        const pcDiv = document.createElement('div');
-        pcDiv.classList.add('pc-div');
-        pcDiv.dataset.id = currentProject;
-        const pcName = document.createElement('div');
-        pcName.classList.add('pcName');
-        const addBtn = document.querySelector('.add-btn');
-        showAddButton();
-        addBtn.addEventListener('click', renderTodoForm);
-        pcName.innerText = e.target.innerText;
-        pcDiv.append(pcName);
-        projectContent.append(pcDiv);
-        displayTodoList();
-    }
-    projectList.addEventListener('click', loadProject);
-})();
-
-const displayTodoList = () => {
-    const newTodoForm = document.getElementById('newTodoForm');
-    const projectTodoContent = document.querySelector('.project-todo-content');
-    const todoForm = document.querySelector('.modal-form');
-
-    function clearCurrentTodos() {
-        projectTodoContent.innerHTML = '';
-    }
-
-    function editTodo(e) {
-        let index = e.target.parentNode.dataset.order;
-        currentProject.deleteTodo();
-        newTodoForm.style.display = 'block';
-    }
-    
-    function removeTodo(e) {
-        let index = e.target.parentNode.dataset.order;
-        currentProject.deleteTodo();
-        clearCurrentTodos();
-        displayTodo();
-    }
-
-    function generateElement(element, type, elemTxt, className) {
-        let newEl = document.createElement(element);
-        if (type !== '') {
-            newEl.textContent = `${type}: ${elemTxt}`;
-        } else {
-            newEl.textContent = elemTxt;
-        }
-        newEl.classList.add(className);
-        return newEl;
-    }
-
-    const displayTodo = () => {
-        currentProject.todoList.forEach((todo, index) => {
-            const todoDiv = document.createElement('div');
-            todoDiv.classList.add('todo-div');
-            todoDiv.dataset.order = index;
-            const editTodoBtn = document.createElement('button');
-            const removeTodoBtn = document.createElement('button');
-            editTodoBtn.classList.add('todo-edit-btn');
-            removeTodoBtn.classList.add('todo-remove-btn');
-            editTodoBtn.innerHTML = '<i class="far fa-edit"></i>';
-            removeTodoBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
-            let todoTitle = generateElement('div', '', todo.title, 'tdT');
-            let todoDescription = generateElement('div', '', todo.description, 'tdDesc');
-            let todoDueDate = generateElement('div', 'Due Date', todo.dueDate, 'tdDate');
-            let todoPriority = generateElement('div', 'Priority', todo.priority, 'tdP');
-            todoDiv.append(todoTitle);
-            todoDiv.append(todoDescription);
-            todoDiv.append(todoDueDate);
-            todoDiv.append(todoPriority);
-            todoDiv.append(editTodoBtn);
-            todoDiv.append(removeTodoBtn);
-            projectTodoContent.append(todoDiv);
-            editTodoBtn.addEventListener('click', editTodo);
-            removeTodoBtn.addEventListener('click', removeTodo);
-        });
-    }
-
-    todoForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const tdTitle = document.getElementById('title').value;
-        const tdDescription = document.getElementById('description').value;
-        const tdDueDate = document.getElementById('dueDate').value;
-        const tdPriority = document.getElementById('priority').value;
-    
-        const newTodo = new _todoItem__WEBPACK_IMPORTED_MODULE_1__.Todo(tdTitle, tdDescription, tdDueDate, tdPriority);
-        currentProject.addNewTodo(newTodo);
-        clearCurrentTodos();
-        displayTodo();
-        todoForm.reset();
+function assignProjectId() {
+    _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.forEach((project, index) => {
+        project.id = index;
     });
+    localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
+}
+    
+newProjectForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const projectName = document.getElementById('name').value;
+    const newProject = new _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.Project(projectName);
+    (0,_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.addNewProject)(newProject);
+    clearCurrentProjects();
+    displayProjectNames();
+    assignProjectId();
+    newProjectForm.reset();
+});
 
-};
+function loadProject(e) {
+    for (let project of _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects) {
+        if(project.name === e.target.innerText) {
+            let index = project.id;
+            currentProject = _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects[index];
+        }
+    }
+    projectContent.innerHTML = '';
+    projectTodoContent.innerHTML = '';
+    const pcDiv = document.createElement('div');
+    pcDiv.classList.add('pc-div');
+    pcDiv.dataset.id = currentProject;
+    const pcName = document.createElement('div');
+    pcName.classList.add('pcName');
+    const addBtn = document.querySelector('.add-btn');
+    showAddButton();
+    addBtn.addEventListener('click', renderTodoForm);
+    pcName.innerText = e.target.innerText;
+    pcDiv.append(pcName);
+    projectContent.append(pcDiv);
+    displayTodo();
+}
+projectList.addEventListener('click', loadProject);
 
+function clearCurrentTodos() {
+    projectTodoContent.innerHTML = '';
+}
 
+function editTodo(e) {
+    let index = e.target.parentNode.dataset.order;
+    currentProject.deleteTodo();
+    newTodoForm.style.display = 'block';
+    localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
+}
+    
+function removeTodo(e) {
+    let index = e.target.parentNode.dataset.order;
+    currentProject.deleteTodo();
+    localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
+    clearCurrentTodos();
+    displayTodo();
+}
+
+function generateElement(element, type, elemTxt, className) {
+    let newEl = document.createElement(element);
+    if ((type !== '') && elemTxt !== undefined) {
+        newEl.textContent = `${type}: ${elemTxt}`;
+    } else {
+        newEl.textContent = elemTxt;
+    }
+    newEl.classList.add(className);
+    return newEl;
+}
+
+const displayTodo = () => {
+    currentProject.todoList.forEach((todo, index) => {
+        const todoDiv = document.createElement('div');
+        todoDiv.classList.add('todo-div');
+        todoDiv.dataset.order = index;
+        const editTodoBtn = document.createElement('button');
+        const removeTodoBtn = document.createElement('button');
+        editTodoBtn.classList.add('todo-edit-btn');
+        removeTodoBtn.classList.add('todo-remove-btn');
+        editTodoBtn.innerHTML = '<i class="far fa-edit"></i>';
+        removeTodoBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
+        let todoTitle = generateElement('div', '', todo.title, 'tdT');
+        let todoDescription = generateElement('div', '', todo.description, 'tdDesc');
+        let todoDueDate = generateElement('div', 'Due Date', todo.dueDate, 'tdDate');
+        let todoPriority = generateElement('div', 'Priority', todo.priority, 'tdP');
+        todoDiv.append(todoTitle);
+        todoDiv.append(todoDescription);
+        todoDiv.append(todoDueDate);
+        todoDiv.append(todoPriority);
+        todoDiv.append(editTodoBtn);
+        todoDiv.append(removeTodoBtn);
+        projectTodoContent.append(todoDiv);
+        editTodoBtn.addEventListener('click', editTodo);
+        removeTodoBtn.addEventListener('click', removeTodo);
+    });
+}
+
+todoForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const tdTitle = document.getElementById('title').value;
+    const tdDescription = document.getElementById('description').value;
+    const tdDueDate = document.getElementById('dueDate').value;
+    const tdPriority = document.getElementById('priority').value;
+
+    const newTodo = new _todoItem_js__WEBPACK_IMPORTED_MODULE_1__.Todo(tdTitle, tdDescription, tdDueDate, tdPriority);
+    currentProject.addNewTodo(newTodo);
+    localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
+    clearCurrentTodos();
+    displayTodo();
+    todoForm.reset();
+});
 
 
 
@@ -3462,20 +3454,14 @@ const displayTodoList = () => {
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _displayController_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./displayController.js */ "./src/displayController.js");
-/* harmony import */ var _projectItem_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./projectItem.js */ "./src/projectItem.js");
+/* harmony import */ var _displayController__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./displayController */ "./src/displayController.js");
 
-
-
-const projectList = document.querySelector('.project-list');
 
 const initialize = (() => {
-    (0,_displayController_js__WEBPACK_IMPORTED_MODULE_0__.hideAddButton)();
-    (0,_displayController_js__WEBPACK_IMPORTED_MODULE_0__.renderProjectForm)();
-    //displayTodoList(currentProject);
+    (0,_displayController__WEBPACK_IMPORTED_MODULE_0__.displayProjectNames)();
+    (0,_displayController__WEBPACK_IMPORTED_MODULE_0__.hideAddButton)();
+    (0,_displayController__WEBPACK_IMPORTED_MODULE_0__.renderProjectForm)();
 })();
-
-
 
 /***/ }),
 
@@ -3492,11 +3478,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Project": () => /* binding */ Project,
 /* harmony export */   "addNewProject": () => /* binding */ addNewProject
 /* harmony export */ });
-/* harmony import */ var _todoItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todoItem */ "./src/todoItem.js");
-
-
-const myProjects = [];
 const newProjectForm = document.querySelector('.project-modal-form');
+
+//retrieve saved projects from localStorage
+const myProjects = JSON.parse(localStorage.getItem('myProjects')) || []
+localStorage.setItem('myProjects', JSON.stringify(myProjects));
+const projectData = JSON.parse(localStorage.getItem('myProjects'));
 
 class Project {
     constructor(name, id) {
@@ -3514,9 +3501,8 @@ class Project {
 
 const addNewProject = (project) => {
     myProjects.push(project);
-    console.log(myProjects);
+    localStorage.setItem('myProjects', JSON.stringify(myProjects));
 }
-
 
 
 
