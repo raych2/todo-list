@@ -1,7 +1,9 @@
-import { Todo, myTodos } from './todoItem';
-
-const myProjects = [];
 const newProjectForm = document.querySelector('.project-modal-form');
+
+//retrieve saved projects from localStorage
+const myProjects = JSON.parse(localStorage.getItem('myProjects')) || []
+localStorage.setItem('myProjects', JSON.stringify(myProjects));
+const projectData = JSON.parse(localStorage.getItem('myProjects'));
 
 class Project {
     constructor(name, id) {
@@ -19,7 +21,7 @@ class Project {
 
 const addNewProject = (project) => {
     myProjects.push(project);
+    localStorage.setItem('myProjects', JSON.stringify(myProjects));
 }
 
-
-export {myProjects, newProjectForm, Project, addNewProject};
+export {myProjects, newProjectForm, Project, addNewProject };

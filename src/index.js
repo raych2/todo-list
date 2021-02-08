@@ -1,11 +1,7 @@
-import { hideAddButton, renderProjectForm, displayTodoList, currentProject } from './displayController.js';
-import { myProjects } from './projectItem.js';
-
-const projectList = document.querySelector('.project-list');
+import { displayProjectNames, hideAddButton, renderProjectForm } from './displayController';
 
 const initialize = (() => {
+    displayProjectNames();
     hideAddButton();
     renderProjectForm();
-    //displayTodoList(currentProject);
 })();
-
