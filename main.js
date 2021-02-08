@@ -3351,6 +3351,7 @@ function loadProject(e) {
         if(project.name === e.target.innerText) {
             let index = project.id;
             currentProject = _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects[index];
+            console.log(currentProject);
         }
     }
     projectContent.innerHTML = '';
@@ -3478,6 +3479,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Project": () => /* binding */ Project,
 /* harmony export */   "addNewProject": () => /* binding */ addNewProject
 /* harmony export */ });
+/* harmony import */ var _todoItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./todoItem */ "./src/todoItem.js");
+
+
 const newProjectForm = document.querySelector('.project-modal-form');
 
 //retrieve saved projects from localStorage
@@ -3502,6 +3506,16 @@ class Project {
 const addNewProject = (project) => {
     myProjects.push(project);
     localStorage.setItem('myProjects', JSON.stringify(myProjects));
+    console.log(myProjects);
+    console.log(projectData);
+}
+
+//add default project
+const defaultProject = new Project('Default');
+defaultProject.addNewTodo(new _todoItem__WEBPACK_IMPORTED_MODULE_0__.Todo('First Todo', 'Example', new Date().toLocaleDateString('en-CA'), 'High'));
+defaultProject.id = 0;
+if(!myProjects.length > 0) {
+    myProjects.push(defaultProject);
 }
 
 
