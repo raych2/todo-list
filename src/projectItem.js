@@ -1,3 +1,5 @@
+import { Todo } from "./todoItem";
+
 const newProjectForm = document.querySelector('.project-modal-form');
 
 //retrieve saved projects from localStorage
@@ -22,6 +24,14 @@ class Project {
 const addNewProject = (project) => {
     myProjects.push(project);
     localStorage.setItem('myProjects', JSON.stringify(myProjects));
+}
+
+//add default project
+const defaultProject = new Project('Default');
+defaultProject.addNewTodo(new Todo('First Todo', 'Example', new Date().toLocaleDateString('en-CA'), 'High'));
+defaultProject.id = 0;
+if(!myProjects.length > 0) {
+    myProjects.push(defaultProject);
 }
 
 export {myProjects, newProjectForm, Project, addNewProject };
