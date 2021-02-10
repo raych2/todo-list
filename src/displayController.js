@@ -9,6 +9,8 @@ const projectTodoContent = document.querySelector('.project-todo-content');
 const newTodoForm = document.getElementById('newTodoForm');
 const todoForm = document.querySelector('.modal-form');
 let currentProject;
+let initialId;
+let initialTodos;
 
 const hideAddButton = () => {
     const addBtn = document.querySelector('.add-btn');
@@ -60,9 +62,9 @@ const renderProjectForm = () => {
 
 window.onclick = function(e) {
     if (e.target === newTodoForm) {
-        newTodoForm.style.display = "none";
+        newTodoForm.style.display = 'none';
     } else if (e.target === newProjectForm) {
-        projectFormModal.style.display = "none";
+        projectFormModal.style.display = 'none';
     }
 }
     
@@ -72,8 +74,10 @@ function clearCurrentProjects() {
 
 function editProjectName(e) {
     let index = e.target.parentNode.dataset.order;
-    myProjects.splice(index, 1);
+    initialId = index;
+    initialTodos = myProjects[index].todoList;
     projectFormModal.style.display = 'block';
+    myProjects.splice(index, 1);
     localStorage.setItem('myProjects', JSON.stringify(myProjects));
 }
     
@@ -115,6 +119,10 @@ newProjectForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const projectName = document.getElementById('name').value;
     const newProject = new Project(projectName);
+    if(initialId && initialTodos) {
+        newProject.id = initialId;
+        newProject.todoList = initialTodos;
+    }
     addNewProject(newProject);
     clearCurrentProjects();
     displayProjectNames();
