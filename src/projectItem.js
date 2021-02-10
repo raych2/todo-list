@@ -1,10 +1,8 @@
-import { Todo } from "./todoItem";
+import { myTodos, Todo } from "./todoItem";
 
 const newProjectForm = document.querySelector('.project-modal-form');
 
-//retrieve saved projects from localStorage
-const myProjects = JSON.parse(localStorage.getItem('myProjects')) || []
-localStorage.setItem('myProjects', JSON.stringify(myProjects));
+let myProjects = [];
 const projectData = JSON.parse(localStorage.getItem('myProjects'));
 
 class Project {
@@ -26,12 +24,39 @@ const addNewProject = (project) => {
     localStorage.setItem('myProjects', JSON.stringify(myProjects));
 }
 
-//add default project
+function assignProjectId() {
+    myProjects.forEach((project, index) => {
+        project.id = index;
+    });
+    localStorage.setItem('myProjects', JSON.stringify(myProjects));
+}
+
 const defaultProject = new Project('Default');
 defaultProject.addNewTodo(new Todo('First Todo', 'Example', new Date().toLocaleDateString('en-CA'), 'High'));
 defaultProject.id = 0;
-if(!myProjects.length > 0) {
-    myProjects.push(defaultProject);
+
+function retrieveProjects() {
+    if (projectData !== null) {
+        for(let i = 0; i < projectData.length; i++) {
+            let savedProject = projectData[i];
+            let spName = savedProject.name;
+            let restoredProject = new Project(spName);
+            for(let j = 0; j < savedProject.todoList.length; j++) {
+                let savedProjectTodo = savedProject.todoList[j];
+                let spTodoTitle = savedProjectTodo.title;
+                let spTodoDescription = savedProjectTodo.description;
+                let spTodoDueDate = savedProjectTodo.dueDate;
+                let spTodoPriority = savedProjectTodo.priority;
+                let spTodo = new Todo(spTodoTitle, spTodoDescription, spTodoDueDate, spTodoPriority);
+                restoredProject.addNewTodo(spTodo);
+            }
+            myProjects.push(restoredProject);
+            assignProjectId();
+        }
+    } else {
+        myProjects.push(defaultProject);
+        localStorage.setItem('myProjects', JSON.stringify(myProjects));
+    }
 }
 
-export {myProjects, newProjectForm, Project, addNewProject };
+export {myProjects, newProjectForm, Project, addNewProject, retrieveProjects, assignProjectId };

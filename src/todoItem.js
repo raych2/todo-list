@@ -4,7 +4,7 @@ class Todo {
     constructor (title, description, dueDate, priority) {
         this.title = title;
         this.description = description;
-        this.dueDate = format(parseISO(dueDate), 'MM/dd/yyyy');
+        this.dueDate = dueDate;
         this.priority = priority;
     }
 }

@@ -1,4 +1,4 @@
-import { myProjects, Project, addNewProject } from './projectItem.js';
+import { myProjects, Project, addNewProject, assignProjectId } from './projectItem.js';
 import { Todo } from './todoItem.js';
 
 const projectList = document.querySelector('.project-list');
@@ -86,6 +86,7 @@ function removeProject(e) {
 }
     
 const displayProjectNames = () => {
+    projectList.innerHTML = '';
     myProjects.forEach((project, index) => {
         const projectDiv = document.createElement('div');
         const editBtn = document.createElement('button');
@@ -110,13 +111,6 @@ const displayProjectNames = () => {
     });
 }
 
-function assignProjectId() {
-    myProjects.forEach((project, index) => {
-        project.id = index;
-    });
-    localStorage.setItem('myProjects', JSON.stringify(myProjects));
-}
-    
 newProjectForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const projectName = document.getElementById('name').value;
