@@ -1,5 +1,6 @@
 import { myProjects, Project, addNewProject, assignProjectId } from './projectItem.js';
 import { Todo } from './todoItem.js';
+import { parseISO, format } from 'date-fns';
 
 const projectList = document.querySelector('.project-list');
 const projectFormModal = document.getElementById('newProjectForm');
@@ -84,6 +85,8 @@ function editProjectName(e) {
 function removeProject(e) {
     let index = e.target.parentNode.dataset.order;
     myProjects.splice(index, 1);
+    projectContent.innerHTML = '';
+    projectTodoContent.innerHTML = '';
     localStorage.setItem('myProjects', JSON.stringify(myProjects));
     clearCurrentProjects();
     displayProjectNames();
@@ -216,7 +219,8 @@ todoForm.addEventListener('submit', (e) => {
 
     const tdTitle = document.getElementById('title').value;
     const tdDescription = document.getElementById('description').value;
-    const tdDueDate = document.getElementById('dueDate').value;
+    let tdDueDate = document.getElementById('dueDate').value;
+    tdDueDate = format(parseISO(tdDueDate), 'MM/dd/yyyy');
     const tdPriority = document.getElementById('priority').value;
 
     const newTodo = new Todo(tdTitle, tdDescription, tdDueDate, tdPriority);

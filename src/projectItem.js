@@ -1,4 +1,5 @@
 import { myTodos, Todo } from "./todoItem";
+import { parseISO, format } from 'date-fns';
 
 const newProjectForm = document.querySelector('.project-modal-form');
 
@@ -32,7 +33,7 @@ function assignProjectId() {
 }
 
 const defaultProject = new Project('Default');
-defaultProject.addNewTodo(new Todo('First Todo', 'Example', new Date().toLocaleDateString('en-CA'), 'High'));
+defaultProject.addNewTodo(new Todo('First Todo', 'Example', format(parseISO(new Date().toLocaleDateString('en-CA')), 'MM/dd/yyyy'), 'High'));
 defaultProject.id = 0;
 
 function retrieveProjects() {

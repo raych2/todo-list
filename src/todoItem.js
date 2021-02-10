@@ -1,5 +1,3 @@
-import { parseISO, format } from 'date-fns';
-
 class Todo {
     constructor (title, description, dueDate, priority) {
         this.title = title;
