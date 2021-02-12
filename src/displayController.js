@@ -157,6 +157,13 @@ function loadProject(e) {
 }
 projectList.addEventListener('click', loadProject);
 
+function assignTodoId() {
+    currentProject.todoList.forEach((todo, index) => {
+        todo.id = index;
+    });
+    localStorage.setItem('myProjects', JSON.stringify(myProjects));
+}
+
 function clearCurrentTodos() {
     projectTodoContent.innerHTML = '';
 }
@@ -228,6 +235,7 @@ todoForm.addEventListener('submit', (e) => {
     localStorage.setItem('myProjects', JSON.stringify(myProjects));
     clearCurrentTodos();
     displayTodo();
+    assignTodoId();
     todoForm.reset();
 });
 

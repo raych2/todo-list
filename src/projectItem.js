@@ -48,7 +48,9 @@ function retrieveProjects() {
                 let spTodoDescription = savedProjectTodo.description;
                 let spTodoDueDate = savedProjectTodo.dueDate;
                 let spTodoPriority = savedProjectTodo.priority;
-                let spTodo = new Todo(spTodoTitle, spTodoDescription, spTodoDueDate, spTodoPriority);
+                let spTodoCompleted = savedProjectTodo.completed;
+                let spTodoId = j;
+                let spTodo = new Todo(spTodoTitle, spTodoDescription, spTodoDueDate, spTodoPriority, spTodoCompleted, spTodoId);
                 restoredProject.addNewTodo(spTodo);
             }
             myProjects.push(restoredProject);
