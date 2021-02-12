@@ -3377,6 +3377,13 @@ function loadProject(e) {
 }
 projectList.addEventListener('click', loadProject);
 
+function assignTodoId() {
+    currentProject.todoList.forEach((todo, index) => {
+        todo.id = index;
+    });
+    localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
+}
+
 function clearCurrentTodos() {
     projectTodoContent.innerHTML = '';
 }
@@ -3448,6 +3455,7 @@ todoForm.addEventListener('submit', (e) => {
     localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
     clearCurrentTodos();
     displayTodo();
+    assignTodoId();
     todoForm.reset();
 });
 
@@ -3544,7 +3552,9 @@ function retrieveProjects() {
                 let spTodoDescription = savedProjectTodo.description;
                 let spTodoDueDate = savedProjectTodo.dueDate;
                 let spTodoPriority = savedProjectTodo.priority;
-                let spTodo = new _todoItem__WEBPACK_IMPORTED_MODULE_0__.Todo(spTodoTitle, spTodoDescription, spTodoDueDate, spTodoPriority);
+                let spTodoCompleted = savedProjectTodo.completed;
+                let spTodoId = j;
+                let spTodo = new _todoItem__WEBPACK_IMPORTED_MODULE_0__.Todo(spTodoTitle, spTodoDescription, spTodoDueDate, spTodoPriority, spTodoCompleted, spTodoId);
                 restoredProject.addNewTodo(spTodo);
             }
             myProjects.push(restoredProject);
@@ -3572,17 +3582,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Todo": () => /* binding */ Todo
 /* harmony export */ });
 class Todo {
-    constructor (title, description, dueDate, priority) {
+    constructor (title, description, dueDate, priority, completed, id) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
+        this.completed = false;
+        this.id = id;
     }
 }
 
 //default todo list
 const myTodos = [];
-
 
 
 
