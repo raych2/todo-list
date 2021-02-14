@@ -183,6 +183,20 @@ function removeTodo(e) {
     displayTodo();
 }
 
+function markTodoComplete(e) {
+    const todoCheck = document.getElementById('completedTodo');
+    let index = e.target.parentNode.dataset.order;
+    if(todoCheck.checked) {
+        e.target.parentNode.style.textDecoration = 'line-through';
+        currentProject.todoList[index].completed = true;
+        localStorage.setItem('myProjects', JSON.stringify(myProjects));
+    } else {
+        e.target.parentNode.style.textDecoration = 'none';
+        currentProject.todoList[index].completed = false;
+        localStorage.setItem('myProjects', JSON.stringify(myProjects));
+    }
+}
+
 function generateElement(element, type, elemTxt, className) {
     let newEl = document.createElement(element);
     if ((type !== '') && elemTxt !== undefined) {
@@ -199,23 +213,33 @@ const displayTodo = () => {
         const todoDiv = document.createElement('div');
         todoDiv.classList.add('todo-div');
         todoDiv.dataset.order = index;
+        const checkbox = document.createElement('input');
         const editTodoBtn = document.createElement('button');
         const removeTodoBtn = document.createElement('button');
         editTodoBtn.classList.add('todo-edit-btn');
         removeTodoBtn.classList.add('todo-remove-btn');
+        checkbox.setAttribute('type', 'checkbox');
+        checkbox.setAttribute('id', 'completedTodo');
         editTodoBtn.innerHTML = '<i class="far fa-edit"></i>';
         removeTodoBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
         let todoTitle = generateElement('div', '', todo.title, 'tdT');
         let todoDescription = generateElement('div', '', todo.description, 'tdDesc');
         let todoDueDate = generateElement('div', 'Due Date', todo.dueDate, 'tdDate');
         let todoPriority = generateElement('div', 'Priority', todo.priority, 'tdP');
+        todoDiv.append(checkbox);
         todoDiv.append(todoTitle);
         todoDiv.append(todoDescription);
         todoDiv.append(todoDueDate);
         todoDiv.append(todoPriority);
         todoDiv.append(editTodoBtn);
         todoDiv.append(removeTodoBtn);
+        if(todo.completed === true) {
+            todoDiv.style.textDecoration = 'line-through';
+        } else {
+            todoDiv.style.textDecoration = 'none';
+        }
         projectTodoContent.append(todoDiv);
+        checkbox.addEventListener('click', markTodoComplete);
         editTodoBtn.addEventListener('click', editTodo);
         removeTodoBtn.addEventListener('click', removeTodo);
     });
