@@ -74,19 +74,22 @@ function clearCurrentProjects() {
 }
 
 function editProjectName(e) {
+    const projectAddBtn = document.getElementById('submit');
     let index = e.target.parentNode.dataset.order;
     initialId = index;
     initialTodos = myProjects[index].todoList;
     projectFormModal.style.display = 'block';
-    myProjects.splice(index, 1);
-    localStorage.setItem('myProjects', JSON.stringify(myProjects));
+    projectAddBtn.addEventListener('click', (e) => {
+        myProjects.splice(index, 1);
+        localStorage.setItem('myProjects', JSON.stringify(myProjects));
+    });
 }
     
 function removeProject(e) {
     let index = e.target.parentNode.dataset.order;
+    projectContent.remove();
+    projectTodoContent.remove();
     myProjects.splice(index, 1);
-    projectContent.innerHTML = '';
-    projectTodoContent.innerHTML = '';
     localStorage.setItem('myProjects', JSON.stringify(myProjects));
     clearCurrentProjects();
     displayProjectNames();
