@@ -3294,19 +3294,22 @@ function clearCurrentProjects() {
 }
 
 function editProjectName(e) {
+    const projectAddBtn = document.getElementById('submit');
     let index = e.target.parentNode.dataset.order;
     initialId = index;
     initialTodos = _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects[index].todoList;
     projectFormModal.style.display = 'block';
-    _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.splice(index, 1);
-    localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
+    projectAddBtn.addEventListener('click', (e) => {
+        _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.splice(index, 1);
+        localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
+    });
 }
     
 function removeProject(e) {
     let index = e.target.parentNode.dataset.order;
+    projectContent.remove();
+    projectTodoContent.remove();
     _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects.splice(index, 1);
-    projectContent.innerHTML = '';
-    projectTodoContent.innerHTML = '';
     localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
     clearCurrentProjects();
     displayProjectNames();
@@ -3429,7 +3432,6 @@ function deleteCompletedTodos(e) {
             localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
             clearCurrentTodos();
             displayTodo();
-            console.log(currentProject.todoList);
         }
     })
 }
@@ -3602,7 +3604,6 @@ function retrieveProjects() {
             }
             myProjects.push(restoredProject);
             assignProjectId();
-            console.log(myProjects);
         }
     } else {
         myProjects.push(defaultProject);
