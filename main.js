@@ -3370,8 +3370,13 @@ function loadProject(e) {
     const addBtn = document.querySelector('.add-btn');
     showAddButton();
     addBtn.addEventListener('click', renderTodoForm);
+    const deleteCompletedBtn = document.createElement('button');
+    deleteCompletedBtn.classList.add('delete-btn');
+    deleteCompletedBtn.innerText = 'Delete Completed Todos';
+    deleteCompletedBtn.addEventListener('click', deleteCompletedTodos);
     pcName.innerText = e.target.innerText;
     pcDiv.append(pcName);
+    pcDiv.append(deleteCompletedBtn);
     projectContent.append(pcDiv);
     displayTodo();
 }
@@ -3417,6 +3422,18 @@ function markTodoComplete(e) {
     }
 }
 
+function deleteCompletedTodos(e) {
+    currentProject.todoList.forEach(todo => {
+        if(todo.completed === true) {
+            currentProject.deleteTodo();
+            localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
+            clearCurrentTodos();
+            displayTodo();
+            console.log(currentProject.todoList);
+        }
+    })
+}
+
 function generateElement(element, type, elemTxt, className) {
     let newEl = document.createElement(element);
     if ((type !== '') && elemTxt !== undefined) {
@@ -3454,6 +3471,7 @@ const displayTodo = () => {
         todoDiv.append(editTodoBtn);
         todoDiv.append(removeTodoBtn);
         if(todo.completed === true) {
+            checkbox.checked = true;
             todoDiv.style.textDecoration = 'line-through';
         } else {
             todoDiv.style.textDecoration = 'none';
@@ -3473,8 +3491,9 @@ todoForm.addEventListener('submit', (e) => {
     let tdDueDate = document.getElementById('dueDate').value;
     tdDueDate = (0,date_fns__WEBPACK_IMPORTED_MODULE_2__.default)((0,date_fns__WEBPACK_IMPORTED_MODULE_3__.default)(tdDueDate), 'MM/dd/yyyy');
     const tdPriority = document.getElementById('priority').value;
+    const tdCompleted = false;
 
-    const newTodo = new _todoItem_js__WEBPACK_IMPORTED_MODULE_1__.Todo(tdTitle, tdDescription, tdDueDate, tdPriority);
+    const newTodo = new _todoItem_js__WEBPACK_IMPORTED_MODULE_1__.Todo(tdTitle, tdDescription, tdDueDate, tdPriority, tdCompleted);
     currentProject.addNewTodo(newTodo);
     localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
     clearCurrentTodos();
@@ -3561,7 +3580,7 @@ function assignProjectId() {
 }
 
 const defaultProject = new Project('Default');
-defaultProject.addNewTodo(new _todoItem__WEBPACK_IMPORTED_MODULE_0__.Todo('First Todo', 'Example', (0,date_fns__WEBPACK_IMPORTED_MODULE_1__.default)((0,date_fns__WEBPACK_IMPORTED_MODULE_2__.default)(new Date().toLocaleDateString('en-CA')), 'MM/dd/yyyy'), 'High'));
+defaultProject.addNewTodo(new _todoItem__WEBPACK_IMPORTED_MODULE_0__.Todo('First Todo', 'Example', (0,date_fns__WEBPACK_IMPORTED_MODULE_1__.default)((0,date_fns__WEBPACK_IMPORTED_MODULE_2__.default)(new Date().toLocaleDateString('en-CA')), 'MM/dd/yyyy'), 'High', false));
 defaultProject.id = 0;
 
 function retrieveProjects() {
@@ -3583,6 +3602,7 @@ function retrieveProjects() {
             }
             myProjects.push(restoredProject);
             assignProjectId();
+            console.log(myProjects);
         }
     } else {
         myProjects.push(defaultProject);
