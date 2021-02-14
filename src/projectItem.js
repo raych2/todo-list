@@ -33,7 +33,7 @@ function assignProjectId() {
 }
 
 const defaultProject = new Project('Default');
-defaultProject.addNewTodo(new Todo('First Todo', 'Example', format(parseISO(new Date().toLocaleDateString('en-CA')), 'MM/dd/yyyy'), 'High'));
+defaultProject.addNewTodo(new Todo('First Todo', 'Example', format(parseISO(new Date().toLocaleDateString('en-CA')), 'MM/dd/yyyy'), 'High', false));
 defaultProject.id = 0;
 
 function retrieveProjects() {

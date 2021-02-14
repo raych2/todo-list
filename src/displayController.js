@@ -150,8 +150,13 @@ function loadProject(e) {
     const addBtn = document.querySelector('.add-btn');
     showAddButton();
     addBtn.addEventListener('click', renderTodoForm);
+    const deleteCompletedBtn = document.createElement('button');
+    deleteCompletedBtn.classList.add('delete-btn');
+    deleteCompletedBtn.innerText = 'Delete Completed Todos';
+    deleteCompletedBtn.addEventListener('click', deleteCompletedTodos);
     pcName.innerText = e.target.innerText;
     pcDiv.append(pcName);
+    pcDiv.append(deleteCompletedBtn);
     projectContent.append(pcDiv);
     displayTodo();
 }
@@ -197,6 +202,17 @@ function markTodoComplete(e) {
     }
 }
 
+function deleteCompletedTodos(e) {
+    currentProject.todoList.forEach(todo => {
+        if(todo.completed === true) {
+            currentProject.deleteTodo();
+            localStorage.setItem('myProjects', JSON.stringify(myProjects));
+            clearCurrentTodos();
+            displayTodo();
+        }
+    })
+}
+
 function generateElement(element, type, elemTxt, className) {
     let newEl = document.createElement(element);
     if ((type !== '') && elemTxt !== undefined) {
@@ -234,6 +250,7 @@ const displayTodo = () => {
         todoDiv.append(editTodoBtn);
         todoDiv.append(removeTodoBtn);
         if(todo.completed === true) {
+            checkbox.checked = true;
             todoDiv.style.textDecoration = 'line-through';
         } else {
             todoDiv.style.textDecoration = 'none';
@@ -253,8 +270,9 @@ todoForm.addEventListener('submit', (e) => {
     let tdDueDate = document.getElementById('dueDate').value;
     tdDueDate = format(parseISO(tdDueDate), 'MM/dd/yyyy');
     const tdPriority = document.getElementById('priority').value;
+    const tdCompleted = false;
 
-    const newTodo = new Todo(tdTitle, tdDescription, tdDueDate, tdPriority);
+    const newTodo = new Todo(tdTitle, tdDescription, tdDueDate, tdPriority, tdCompleted);
     currentProject.addNewTodo(newTodo);
     localStorage.setItem('myProjects', JSON.stringify(myProjects));
     clearCurrentTodos();
