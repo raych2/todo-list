@@ -3397,10 +3397,17 @@ function clearCurrentTodos() {
 }
 
 function editTodo(e) {
-    let index = e.target.parentNode.dataset.order;
-    currentProject.deleteTodo();
+    const todoAddBtn = document.getElementById('submitTodo');
+    const cancelBtn = document.querySelector('.cancel-btn');
+    let index = e.target.parentNode.parentNode.dataset.order;
     newTodoForm.style.display = 'block';
-    localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
+    todoAddBtn.addEventListener('click', (e) => {
+        currentProject.deleteTodo(index);
+        localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
+    })
+    cancelBtn.addEventListener('click', (e) => {
+        newTodoForm.style.display = 'none';
+    });
 }
     
 function removeTodo(e) {
