@@ -3417,8 +3417,8 @@ function editTodo(e) {
 }
 
 function removeTodo(e) {
-    let index = e.target.parentNode.dataset.order;
-    currentProject.deleteTodo();
+    let index = e.target.parentNode.parentNode.dataset.order;
+    currentProject.deleteTodo(index);
     localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
     clearCurrentTodos();
     displayTodo();
@@ -3577,8 +3577,8 @@ class Project {
     addNewTodo(todo) {
         this.todoList.push(todo);
     }
-    deleteTodo(id) {
-        this.todoList.splice(id, 1);
+    deleteTodo(index) {
+        this.todoList.splice(index, 1);
     }
 }
 
@@ -3617,7 +3617,6 @@ function retrieveProjects() {
             }
             myProjects.push(restoredProject);
             assignProjectId();
-            console.log(myProjects);
         }
     } else {
         myProjects.push(defaultProject);
