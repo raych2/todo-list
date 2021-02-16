@@ -3296,6 +3296,7 @@ function clearCurrentProjects() {
 function editProjectName(e) {
     const projectAddBtn = document.getElementById('submit');
     let index = e.target.parentNode.dataset.order;
+    document.getElementById('name').value = _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects[index].name;
     initialId = index;
     initialTodos = _projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects[index].todoList;
     projectFormModal.style.display = 'block';
@@ -3401,15 +3402,20 @@ function editTodo(e) {
     const cancelBtn = document.querySelector('.cancel-btn');
     let index = e.target.parentNode.parentNode.dataset.order;
     newTodoForm.style.display = 'block';
+    document.getElementById('title').value = currentProject.todoList[index].title;
+    document.getElementById('description').value = currentProject.todoList[index].description;
+    document.getElementById('dueDate').value = currentProject.todoList[index].dueDate;
+    document.getElementById('priority').value = currentProject.todoList[index].priority;
     todoAddBtn.addEventListener('click', (e) => {
-        currentProject.deleteTodo(index);
+        currentProject.todoList.splice(index, 1);
         localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
+        newTodoForm.style.display = 'none';
     })
     cancelBtn.addEventListener('click', (e) => {
         newTodoForm.style.display = 'none';
     });
 }
-    
+
 function removeTodo(e) {
     let index = e.target.parentNode.dataset.order;
     currentProject.deleteTodo();
@@ -3571,8 +3577,8 @@ class Project {
     addNewTodo(todo) {
         this.todoList.push(todo);
     }
-    deleteTodo(index) {
-        this.todoList.splice(index, 1);
+    deleteTodo(id) {
+        this.todoList.splice(id, 1);
     }
 }
 
@@ -3611,6 +3617,7 @@ function retrieveProjects() {
             }
             myProjects.push(restoredProject);
             assignProjectId();
+            console.log(myProjects);
         }
     } else {
         myProjects.push(defaultProject);
