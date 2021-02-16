@@ -197,8 +197,8 @@ function editTodo(e) {
 }
 
 function removeTodo(e) {
-    let index = e.target.parentNode.dataset.order;
-    currentProject.deleteTodo();
+    let index = e.target.parentNode.parentNode.dataset.order;
+    currentProject.deleteTodo(index);
     localStorage.setItem('myProjects', JSON.stringify(myProjects));
     clearCurrentTodos();
     displayTodo();
