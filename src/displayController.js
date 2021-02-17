@@ -100,13 +100,15 @@ const displayProjectNames = () => {
     projectList.innerHTML = '';
     myProjects.forEach((project, index) => {
         const projectDiv = document.createElement('div');
+        const projectButtonsDiv = document.createElement('div');
         const editBtn = document.createElement('button');
         const removeBtn = document.createElement('button');
         projectDiv.classList.add('project-div');
+        projectButtonsDiv.classList.add('project-buttons-div');
         editBtn.classList.add('project-edit-btn');
         removeBtn.classList.add('project-remove-btn');
-        editBtn.innerHTML = '<i class="far fa-edit"></i>';
-        removeBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
+        editBtn.innerHTML = '<i class="far fa-edit fa-lg"></i>';
+        removeBtn.innerHTML = '<i class="far fa-trash-alt fa-lg"></i>';
         projectDiv.dataset.order = index;
         editBtn.dataset.order = index;
         removeBtn.dataset.order = index;
@@ -114,8 +116,9 @@ const displayProjectNames = () => {
         pName.classList.add('project-name');
         pName.innerText = project.name;
         projectDiv.append(pName);
-        projectDiv.append(editBtn);
-        projectDiv.append(removeBtn);
+        projectButtonsDiv.append(editBtn);
+        projectButtonsDiv.append(removeBtn);
+        projectDiv.append(projectButtonsDiv);
         projectList.append(projectDiv);
         editBtn.addEventListener('click', editProjectName);
         removeBtn.addEventListener('click', removeProject);
@@ -243,17 +246,19 @@ function generateElement(element, type, elemTxt, className) {
 const displayTodo = () => {
     currentProject.todoList.forEach((todo, index) => {
         const todoDiv = document.createElement('div');
+        const todoButtonsDiv = document.createElement('div');
         todoDiv.classList.add('todo-div');
         todoDiv.dataset.order = index;
         const checkbox = document.createElement('input');
         const editTodoBtn = document.createElement('button');
         const removeTodoBtn = document.createElement('button');
+        todoButtonsDiv.classList.add('todo-buttons-div');
         editTodoBtn.classList.add('todo-edit-btn');
         removeTodoBtn.classList.add('todo-remove-btn');
         checkbox.setAttribute('type', 'checkbox');
         checkbox.setAttribute('id', 'completedTodo');
-        editTodoBtn.innerHTML = '<i class="far fa-edit"></i>';
-        removeTodoBtn.innerHTML = '<i class="far fa-trash-alt"></i>';
+        editTodoBtn.innerHTML = '<i class="far fa-edit fa-lg"></i>';
+        removeTodoBtn.innerHTML = '<i class="far fa-trash-alt fa-lg"></i>';
         let todoTitle = generateElement('div', '', todo.title, 'tdT');
         let todoDescription = generateElement('div', '', todo.description, 'tdDesc');
         let todoDueDate = generateElement('div', 'Due Date', todo.dueDate, 'tdDate');
@@ -263,8 +268,9 @@ const displayTodo = () => {
         todoDiv.append(todoDescription);
         todoDiv.append(todoDueDate);
         todoDiv.append(todoPriority);
-        todoDiv.append(editTodoBtn);
-        todoDiv.append(removeTodoBtn);
+        todoButtonsDiv.append(editTodoBtn);
+        todoButtonsDiv.append(removeTodoBtn);
+        todoDiv.append(todoButtonsDiv);
         if(todo.completed === true) {
             checkbox.checked = true;
             todoDiv.style.textDecoration = 'line-through';

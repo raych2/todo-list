@@ -54,6 +54,9 @@ header i {
     align-items: center;
     position: relative;
 }
+.project-edit-btn, .project-remove-btn, .todo-edit-btn, .todo-remove-btn {
+    padding: 0 5px 0 5px;
+}
 .project-div {
     display: flex;
     flex-flow: row wrap;
