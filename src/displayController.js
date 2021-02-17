@@ -64,7 +64,7 @@ const renderProjectForm = () => {
 window.onclick = function(e) {
     if (e.target === newTodoForm) {
         newTodoForm.style.display = 'none';
-    } else if (e.target === newProjectForm) {
+    } else if (e.target === projectFormModal) {
         projectFormModal.style.display = 'none';
     }
 }
