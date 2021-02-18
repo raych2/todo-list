@@ -15,9 +15,6 @@ class Project {
     addNewTodo(todo) {
         this.todoList.push(todo);
     }
-    deleteTodo(index) {
-        this.todoList.splice(index, 1);
-    }
 }
 
 const addNewProject = (project) => {
