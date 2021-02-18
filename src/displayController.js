@@ -260,7 +260,7 @@ const displayTodo = () => {
         editTodoBtn.innerHTML = '<i class="far fa-edit fa-lg"></i>';
         removeTodoBtn.innerHTML = '<i class="far fa-trash-alt fa-lg"></i>';
         let todoTitle = generateElement('div', '', todo.title, 'tdT');
-        let todoDescription = generateElement('div', '', todo.description, 'tdDesc');
+        let todoDescription = generateElement('div', 'Description', todo.description, 'tdDesc');
         let todoDueDate = generateElement('div', 'Due Date', todo.dueDate, 'tdDate');
         let todoPriority = generateElement('div', 'Priority', todo.priority, 'tdP');
         todoDiv.append(checkbox);

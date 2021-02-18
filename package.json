@@ -18,8 +18,8 @@
   },
   "homepage": "https://github.com/raych2/todo-list#readme",
   "devDependencies": {
-    "webpack": "^5.11.1",
-    "webpack-cli": "^4.3.1"
+    "webpack": "^5.22.0",
+    "webpack-cli": "^4.5.0"
   },
   "dependencies": {
     "date-fns": "^2.16.1"

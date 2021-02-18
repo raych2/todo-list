@@ -108,10 +108,20 @@ header i {
 }
 .todo-div {
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    height: 80px;
+    margin-bottom: 10px;
+    padding: 0 10px;
+    border-radius: 5px;
+    border: 1px solid #FFFFFF;
+    background-color: #748CAB;
+    
+}
+#completedTodo {
+    transform: scale(1.5);
 }
 .modal {
     display: none;
