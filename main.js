@@ -3403,7 +3403,7 @@ function clearCurrentTodos() {
 function editTodo(e) {
     const todoAddBtn = document.getElementById('submitTodo');
     const cancelBtn = document.querySelector('.cancel-btn');
-    let index = e.target.parentNode.parentNode.dataset.order;
+    let index = e.target.parentNode.dataset.order;
     newTodoForm.style.display = 'block';
     document.getElementById('title').value = currentProject.todoList[index].title;
     document.getElementById('description').value = currentProject.todoList[index].description;
@@ -3420,8 +3420,8 @@ function editTodo(e) {
 }
 
 function removeTodo(e) {
-    let index = e.target.parentNode.parentNode.dataset.order;
-    currentProject.deleteTodo(index);
+    let index = e.target.parentNode.dataset.order;
+    currentProject.todoList.splice(index, 1);
     localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
     clearCurrentTodos();
     displayTodo();
@@ -3444,7 +3444,7 @@ function markTodoComplete(e) {
 function deleteCompletedTodos(e) {
     currentProject.todoList.forEach(todo => {
         if(todo.completed === true) {
-            currentProject.deleteTodo();
+            currentProject.todoList.splice(index, 1);
             localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
             clearCurrentTodos();
             displayTodo();
@@ -3472,6 +3472,8 @@ const displayTodo = () => {
         const checkbox = document.createElement('input');
         const editTodoBtn = document.createElement('button');
         const removeTodoBtn = document.createElement('button');
+        editTodoBtn.dataset.order = index;
+        removeTodoBtn.dataset.order = index;
         todoButtonsDiv.classList.add('todo-buttons-div');
         editTodoBtn.classList.add('todo-edit-btn');
         removeTodoBtn.classList.add('todo-remove-btn');
@@ -3561,9 +3563,6 @@ class Project {
     }
     addNewTodo(todo) {
         this.todoList.push(todo);
-    }
-    deleteTodo(index) {
-        this.todoList.splice(index, 1);
     }
 }
 
