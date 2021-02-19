@@ -3428,28 +3428,32 @@ function removeTodo(e) {
 }
 
 function markTodoComplete(e) {
-    const todoCheck = document.getElementById('completedTodo');
+    const todoCheck = document.querySelector('.completed-todo');
     let index = e.target.parentNode.dataset.order;
+    console.log(index);
+    console.log(e.target.parentNode);
     if(todoCheck.checked) {
         e.target.parentNode.style.textDecoration = 'line-through';
         currentProject.todoList[index].completed = true;
+        console.log(currentProject.todoList[index]);
         localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
     } else {
         e.target.parentNode.style.textDecoration = 'none';
         currentProject.todoList[index].completed = false;
+        console.log(currentProject.todoList[index]);
         localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
     }
 }
 
 function deleteCompletedTodos(e) {
-    currentProject.todoList.forEach(todo => {
+    currentProject.todoList.forEach((todo, index) => {
         if(todo.completed === true) {
             currentProject.todoList.splice(index, 1);
-            localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
-            clearCurrentTodos();
-            displayTodo();
         }
-    })
+    });
+    localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
+    clearCurrentTodos();
+    displayTodo();
 }
 
 function generateElement(element, type, elemTxt, className) {
@@ -3478,7 +3482,7 @@ const displayTodo = () => {
         editTodoBtn.classList.add('todo-edit-btn');
         removeTodoBtn.classList.add('todo-remove-btn');
         checkbox.setAttribute('type', 'checkbox');
-        checkbox.setAttribute('id', 'completedTodo');
+        checkbox.classList.add('completed-todo');
         editTodoBtn.innerHTML = '<i class="far fa-edit fa-lg"></i>';
         removeTodoBtn.innerHTML = '<i class="far fa-trash-alt fa-lg"></i>';
         let todoTitle = generateElement('div', '', todo.title, 'tdT');
@@ -3601,6 +3605,7 @@ function retrieveProjects() {
             }
             myProjects.push(restoredProject);
             assignProjectId();
+            console.log(myProjects);
         }
     } else {
         myProjects.push(defaultProject);
