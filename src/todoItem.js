@@ -9,7 +9,4 @@ class Todo {
     }
 }
 
-//default todo list
-const myTodos = [];
-
-export {myTodos, Todo};
+export {Todo};

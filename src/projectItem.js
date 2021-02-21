@@ -1,4 +1,4 @@
-import { myTodos, Todo } from "./todoItem";
+import { Todo } from './todoItem';
 import { parseISO, format } from 'date-fns';
 
 const newProjectForm = document.querySelector('.project-modal-form');
@@ -59,4 +59,4 @@ function retrieveProjects() {
     }
 }
 
-export {myProjects, newProjectForm, Project, addNewProject, retrieveProjects, assignProjectId };
+export {myProjects, Project, addNewProject, retrieveProjects, assignProjectId };
