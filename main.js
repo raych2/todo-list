@@ -3428,29 +3428,19 @@ function removeTodo(e) {
 }
 
 function markTodoComplete(e) {
-    const todoCheck = document.querySelector('.completed-todo');
     let index = e.target.parentNode.dataset.order;
-    console.log(index);
-    console.log(e.target.parentNode);
-    if(todoCheck.checked) {
-        e.target.parentNode.style.textDecoration = 'line-through';
+    if(e.target.checked) {
         currentProject.todoList[index].completed = true;
-        console.log(currentProject.todoList[index]);
-        localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
+        e.target.parentNode.style.textDecoration = 'line-through';
     } else {
-        e.target.parentNode.style.textDecoration = 'none';
         currentProject.todoList[index].completed = false;
-        console.log(currentProject.todoList[index]);
-        localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
+        e.target.parentNode.style.textDecoration = 'none';
     }
+    localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
 }
 
 function deleteCompletedTodos(e) {
-    currentProject.todoList.forEach((todo, index) => {
-        if(todo.completed === true) {
-            currentProject.todoList.splice(index, 1);
-        }
-    });
+    currentProject.todoList = currentProject.todoList.filter(todo => !todo.completed);
     localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
     clearCurrentTodos();
     displayTodo();
@@ -3489,6 +3479,12 @@ const displayTodo = () => {
         let todoDescription = generateElement('div', 'Description', todo.description, 'tdDesc');
         let todoDueDate = generateElement('div', 'Due Date', todo.dueDate, 'tdDate');
         let todoPriority = generateElement('div', 'Priority', todo.priority, 'tdP');
+        if(todo.completed === true) {
+            checkbox.checked = true;
+            todoDiv.style.textDecoration = 'line-through';
+        } else {
+            todoDiv.style.textDecoration = 'none';
+        }
         todoDiv.append(checkbox);
         todoDiv.append(todoTitle);
         todoDiv.append(todoDescription);
@@ -3497,12 +3493,6 @@ const displayTodo = () => {
         todoButtonsDiv.append(editTodoBtn);
         todoButtonsDiv.append(removeTodoBtn);
         todoDiv.append(todoButtonsDiv);
-        if(todo.completed === true) {
-            checkbox.checked = true;
-            todoDiv.style.textDecoration = 'line-through';
-        } else {
-            todoDiv.style.textDecoration = 'none';
-        }
         projectTodoContent.append(todoDiv);
         checkbox.addEventListener('click', markTodoComplete);
         editTodoBtn.addEventListener('click', editTodo);
@@ -3605,7 +3595,6 @@ function retrieveProjects() {
             }
             myProjects.push(restoredProject);
             assignProjectId();
-            console.log(myProjects);
         }
     } else {
         myProjects.push(defaultProject);
