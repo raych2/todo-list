@@ -3409,8 +3409,8 @@ function editTodo(e) {
     document.getElementById('description').value = currentProject.todoList[index].description;
     document.getElementById('dueDate').value = currentProject.todoList[index].dueDate;
     document.getElementById('priority').value = currentProject.todoList[index].priority;
+    currentProject.todoList.splice(index, 1);
     todoAddBtn.addEventListener('click', (e) => {
-        currentProject.todoList.splice(index, 1);
         localStorage.setItem('myProjects', JSON.stringify(_projectItem_js__WEBPACK_IMPORTED_MODULE_0__.myProjects));
         newTodoForm.style.display = 'none';
     })
