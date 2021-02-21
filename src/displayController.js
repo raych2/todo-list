@@ -208,28 +208,22 @@ function removeTodo(e) {
 }
 
 function markTodoComplete(e) {
-    const todoCheck = document.getElementById('completedTodo');
     let index = e.target.parentNode.dataset.order;
-    if(todoCheck.checked) {
-        e.target.parentNode.style.textDecoration = 'line-through';
+    if(e.target.checked) {
         currentProject.todoList[index].completed = true;
-        localStorage.setItem('myProjects', JSON.stringify(myProjects));
+        e.target.parentNode.style.textDecoration = 'line-through';
     } else {
-        e.target.parentNode.style.textDecoration = 'none';
         currentProject.todoList[index].completed = false;
-        localStorage.setItem('myProjects', JSON.stringify(myProjects));
+        e.target.parentNode.style.textDecoration = 'none';
     }
+    localStorage.setItem('myProjects', JSON.stringify(myProjects));
 }
 
 function deleteCompletedTodos(e) {
-    currentProject.todoList.forEach(todo => {
-        if(todo.completed === true) {
-            currentProject.todoList.splice(index, 1);
-            localStorage.setItem('myProjects', JSON.stringify(myProjects));
-            clearCurrentTodos();
-            displayTodo();
-        }
-    })
+    currentProject.todoList = currentProject.todoList.filter(todo => !todo.completed);
+    localStorage.setItem('myProjects', JSON.stringify(myProjects));
+    clearCurrentTodos();
+    displayTodo();
 }
 
 function generateElement(element, type, elemTxt, className) {
@@ -258,13 +252,19 @@ const displayTodo = () => {
         editTodoBtn.classList.add('todo-edit-btn');
         removeTodoBtn.classList.add('todo-remove-btn');
         checkbox.setAttribute('type', 'checkbox');
-        checkbox.setAttribute('id', 'completedTodo');
+        checkbox.classList.add('completed-todo');
         editTodoBtn.innerHTML = '<i class="far fa-edit fa-lg"></i>';
         removeTodoBtn.innerHTML = '<i class="far fa-trash-alt fa-lg"></i>';
         let todoTitle = generateElement('div', '', todo.title, 'tdT');
         let todoDescription = generateElement('div', 'Description', todo.description, 'tdDesc');
         let todoDueDate = generateElement('div', 'Due Date', todo.dueDate, 'tdDate');
         let todoPriority = generateElement('div', 'Priority', todo.priority, 'tdP');
+        if(todo.completed === true) {
+            checkbox.checked = true;
+            todoDiv.style.textDecoration = 'line-through';
+        } else {
+            todoDiv.style.textDecoration = 'none';
+        }
         todoDiv.append(checkbox);
         todoDiv.append(todoTitle);
         todoDiv.append(todoDescription);
@@ -273,12 +273,6 @@ const displayTodo = () => {
         todoButtonsDiv.append(editTodoBtn);
         todoButtonsDiv.append(removeTodoBtn);
         todoDiv.append(todoButtonsDiv);
-        if(todo.completed === true) {
-            checkbox.checked = true;
-            todoDiv.style.textDecoration = 'line-through';
-        } else {
-            todoDiv.style.textDecoration = 'none';
-        }
         projectTodoContent.append(todoDiv);
         checkbox.addEventListener('click', markTodoComplete);
         editTodoBtn.addEventListener('click', editTodo);
