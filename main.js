@@ -3532,7 +3532,6 @@ todoForm.addEventListener('submit', (e) => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "myProjects": () => (/* binding */ myProjects),
-/* harmony export */   "newProjectForm": () => (/* binding */ newProjectForm),
 /* harmony export */   "Project": () => (/* binding */ Project),
 /* harmony export */   "addNewProject": () => (/* binding */ addNewProject),
 /* harmony export */   "retrieveProjects": () => (/* binding */ retrieveProjects),
@@ -3614,7 +3613,6 @@ function retrieveProjects() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "myTodos": () => (/* binding */ myTodos),
 /* harmony export */   "Todo": () => (/* binding */ Todo)
 /* harmony export */ });
 class Todo {
@@ -3627,9 +3625,6 @@ class Todo {
         this.id = id;
     }
 }
-
-//default todo list
-const myTodos = [];
 
 
 
